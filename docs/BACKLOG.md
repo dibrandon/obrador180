@@ -84,6 +84,6 @@
 
 **Versión:** MVP v0.2  
 **Avance estimado:** 40 %  
-**Última actualización:** Octubre 2025  
+**Última actualización:** 21 de Octubre 2025  
 
 ---

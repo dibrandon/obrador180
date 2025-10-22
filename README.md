@@ -15,7 +15,7 @@ Objetivo: **reposicionar Obrador 180 graus como pastelería artesanal** y recupe
 ---
 
 ## 🗂️ Estructura del proyecto
-
+```bash
 obrador180/
 ├── frontend/   # React + Vite (UI pública)
 ├── backend/    # Node + Express (API + conexión Mongo)
@@ -23,6 +23,7 @@ obrador180/
 ├── design/     # Wireframes, colores, referencias visuales
 └── README.md
 
+```
 ---
 
 ## ⚙️ Stack Técnico
