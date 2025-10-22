@@ -32,14 +32,14 @@ Reforzar la identidad artesanal del obrador mediante una plataforma web moderna,
 
 ## ⚙️ Estructura General del Proyecto
 
-´´´bash
+```bash
 obrador180/
 ├── frontend/ # UI pública (React + Vite + CSS artesanal)
 ├── backend/ # API + lógica + conexión MongoDB
 ├── docs/ # Documentación, resúmenes y bitácoras
 ├── design/ # Paleta, tipografías, referencias visuales
 └── README.md
-´´´
+```
 
 
 ---
@@ -103,12 +103,12 @@ obrador180/
 
 ## 🚀 Hitos del Proyecto
 
-| Fase     | Objetivo                               | Fecha estimada | Entregable                           |
-|----------|---------------------------------------------------------|--------------------------------------|
-| Semana 1 | Setup técnico + seed de productos      | 22–26 oct 2025 | API conectada + Mongo online         |
-| Semana 2 | Catálogo visible + WhatsApp funcional  | 27 oct – 1 nov | Frontend conectado y operativo       |
-| Semana 3 | Identidad visual + secciones           | 2–8 nov        | Home, catálogo estilizado, contacto  |
-| Semana 4 | Deploy + QA final                      | 9–18 nov       | MVP público y documentación completa |
+| Fase | Objetivo | Fecha estimada | Entregable |
+|------|-----------|----------------|-------------|
+| Semana 1 | Setup técnico + seed de productos | 22–26 oct 2025 | API conectada + Mongo online |
+| Semana 2 | Catálogo visible + WhatsApp funcional | 27 oct – 1 nov | Frontend conectado y operativo |
+| Semana 3 | Identidad visual + secciones | 2–8 nov | Home, catálogo estilizado, contacto |
+| Semana 4 | Deploy + QA final | 9–18 nov | MVP público y documentación completa |
 
 ---
 
