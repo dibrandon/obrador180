@@ -1,22 +1,42 @@
-import express from "express";
-import { Product } from "../models/Product.js";
+// backend/routes/products.js
+import { Router } from "express";
+import Product from "../models/Product.js";
 
-const router = express.Router();
+const router = Router();
 
-// GET: todos los productos
-router.get("/", async (_req, res) => {
-  const products = await Product.find().sort({ createdAt: -1 });
-  res.json(products);
+// GET /products
+router.get("/", async (req, res, next) => {
+  try {
+    const items = await Product.find({ isActive: true }).sort({ createdAt: -1 });
+    res.json(items);
+  } catch (err) {
+    next(err);
+  }
 });
 
-// POST: crear producto (dummy)
-router.post("/", async (req, res) => {
+// POST /products
+router.post("/", async (req, res, next) => {
   try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
+    const { name, price, description = "", imageUrl = "", isActive = true } = req.body;
+
+    const hasName = typeof name === "string" && name.trim().length > 0;
+    const isNumber = typeof price === "number" && Number.isFinite(price) && price >= 0;
+
+    if (!hasName || !isNumber) {
+      return res.status(400).json({ error: "Campos inválidos: 'name' (string) y 'price' (number >= 0) son obligatorios." });
+    }
+
+    const doc = await Product.create({
+      name: name.trim(),
+      price,
+      description: description.trim(),
+      imageUrl: imageUrl.trim(),
+      isActive
+    });
+
+    res.status(201).json(doc);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    next(err);
   }
 });
 

@@ -1,17 +1,44 @@
 {
   "name": "obrador180-backend",
   "version": "1.0.0",
-  "description": "API para Obrador 180 graus MVP",
+  "description": "API backend para Obrador 180 graus — Express 5 + MongoDB + seguridad lista para producción.",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "mongodb": "^6.20.0",
-    "mongoose": "^8.19.2"
-  }
+    "express-rate-limit": "^8.2.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.19.2",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "index.js",
+      "routes",
+      "controllers",
+      "models",
+      "middleware"
+    ],
+    "ext": "js,json",
+    "ignore": [
+      "node_modules"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    }
+  },
+  "license": "no-license"
 }
+
