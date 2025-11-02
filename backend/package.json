@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "seed": "node seedProducts.js",
+    "seed:clean": "node seedProducts.js --clean"
   },
   "engines": {
     "node": ">=20"
