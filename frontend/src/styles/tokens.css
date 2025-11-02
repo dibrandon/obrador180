@@ -1,0 +1,14 @@
+:root{
+  --color-bg: #F9E3D3;            /* salmón claro pastel */
+  --color-text: #5C4033;          /* marrón chocolate suave */
+  --color-accent: #D4AF37;        /* dorado art-deco */
+  --color-button-1: #E8B99B;      /* salmón suave */
+  --color-button-2: #C48A6A;      /* salmón tostado */
+  --color-card: #FFF8F2;          /* blanco cálido rosado */
+
+  --radius-xl: 16px;
+  --radius-lg: 12px;
+  --shadow-soft: 0 6px 18px rgba(0,0,0,.06);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}

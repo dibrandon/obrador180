@@ -1,35 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import ProductGrid from './components/ProductGrid';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    <main className="container">
+      <header className="header">
+        <div className="brand">Obrador 180°</div>
+        <span className="badge">MVP v0.4</span>
+      </header>
+
+      <h1 style={{ marginTop: 16, fontSize: '1.6rem' }}>Carta base</h1>
+      <p style={{ opacity: 0.85, marginTop: 6 }}>
+        Selección inicial de productos. Pide por WhatsApp y coordinamos entrega.
       </p>
-    </>
-  )
+
+      <ProductGrid />
+    </main>
+  );
 }
 
-export default App
+export default App;
