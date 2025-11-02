@@ -21,7 +21,7 @@ function HeaderNav() {
         <a href="#carta">Carta</a>
         <a href={waLink} target="_blank" rel="noreferrer">Encargar</a>
       </nav>
-      <span className="badge">MVP v0.4</span>
+      <span className="badge">MVP v0.5</span>
       <ViewToggle showLabelsOnDesktop={false} />
     </header>
   );
