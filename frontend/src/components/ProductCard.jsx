@@ -1,5 +1,6 @@
 export default function ProductCard({ product }){
   const { name, description, price, image } = product;
+  const fmt = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
 
   const waNumber = import.meta.env.VITE_WA_NUMBER;
   const msg = encodeURIComponent(`Hola, quiero encargar: ${name} — €${price.toFixed(2)}.`);
@@ -14,7 +15,7 @@ export default function ProductCard({ product }){
         <div className="ribbon">Obrador 180°</div>
         <h3 className="card__title">{name}</h3>
         <p className="card__desc">{description || '—'}</p>
-        <div className="card__price">€{price?.toFixed ? price.toFixed(2) : price}</div>
+        <div className="card__price">{fmt.format(Number(price || 0))}</div>
       </div>
       <a className="button" href={waLink} target="_blank" rel="noreferrer">
         Encargar por WhatsApp
