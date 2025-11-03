@@ -1,0 +1,10 @@
+.admin-container{max-width:680px;margin:0 auto;padding:16px;}
+.admin-guard{max-width:620px;margin:40px auto;padding:16px;border:1px solid #ddd;border-radius:8px;}
+.admin-form{display:grid;gap:12px;padding:16px;border:1px solid #e5e5e5;border-radius:10px;background:#fafafa;}
+.admin-form__title{margin:0 0 4px 0;font-size:20px;}
+.admin-form__label{display:grid;gap:6px;font-size:14px;}
+.admin-form__input,.admin-form__textarea{width:100%;font:inherit;border:1px solid #cfcfcf;border-radius:8px;padding:10px 12px;outline:none;background:#fff;}
+.admin-form__input:focus,.admin-form__textarea:focus{border-color:#9a9a9a;}
+.admin-form__button{width:100%;padding:12px 14px;border:0;border-radius:10px;background:#111;color:#fff;font-weight:600;cursor:pointer;}
+.admin-form__button:disabled{opacity:.6;cursor:not-allowed;}
+.admin-form__msg{font-size:14px;padding:8px 10px;background:#fffbe6;border:1px solid #f5e6a6;border-radius:8px;}
