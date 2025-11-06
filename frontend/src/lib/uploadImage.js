@@ -1,31 +1,41 @@
+// src/lib/uploadImage.js
+// Subida UNSIGNED a Cloudinary con compresión client-side si >2MB
 export async function uploadImage(file, onProgress) {
   const cloud = import.meta.env.VITE_CLOUDINARY_CLOUD;
   const preset = import.meta.env.VITE_CLOUDINARY_PRESET;
-  if (!cloud || !preset) throw new Error("Cloudinary no configurado");
+  if (!cloud || !preset) {
+    throw new Error("Cloudinary no configurado (VITE_CLOUDINARY_CLOUD/PRESET)");
+  }
 
-  // Límite 2 MB → si supera, comprimimos a 1600px lado mayor
   let toSend = file;
   if (file.size > 2 * 1024 * 1024) {
-    toSend = await compressImage(file, 1600);
+    toSend = await compressImage(file, 1600); // ~1600px lado mayor
   }
 
   const url = `https://api.cloudinary.com/v1_1/${cloud}/upload`;
   const form = new FormData();
   form.append("file", toSend);
   form.append("upload_preset", preset);
-  // form.append("folder", "obrador/products"); 
+  form.append("folder", "obrador/products");
 
   const xhr = new XMLHttpRequest();
   const p = new Promise((resolve, reject) => {
     xhr.open("POST", url);
     xhr.onload = () => {
       try {
-        const json = JSON.parse(xhr.responseText);
+        const text = xhr.responseText || "{}";
+        const json = JSON.parse(text);
+        if (xhr.status >= 400) {
+          const errMsg = json.error?.message || `Upload ${xhr.status}`;
+          return reject(new Error(errMsg));
+        }
         if (!json.secure_url) return reject(new Error("Upload fallido"));
         resolve(json.secure_url);
-      } catch (e) { reject(e); }
+      } catch (e) {
+        reject(e);
+      }
     };
-    xhr.onerror = () => reject(new Error("Error de red"));
+    xhr.onerror = () => reject(new Error("Error de red subiendo a Cloudinary"));
     if (onProgress) {
       xhr.upload.onprogress = (ev) => {
         if (ev.lengthComputable) onProgress(Math.round((ev.loaded / ev.total) * 100));
@@ -33,9 +43,11 @@ export async function uploadImage(file, onProgress) {
     }
     xhr.send(form);
   });
+
   return p;
 }
 
+// --- helpers de compresión ---
 async function compressImage(file, maxSide = 1600) {
   const img = await readFileToImage(file);
   const { w, h } = fitContain(img.naturalWidth, img.naturalHeight, maxSide);
