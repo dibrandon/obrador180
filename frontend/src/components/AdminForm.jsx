@@ -176,11 +176,37 @@ export default function AdminForm() {
         />
       </label>
 
-      <button className="admin-form__button" type="submit" disabled={saving || uploading}>
-        {saving ? "Guardando…" : "Guardar producto"}
-      </button>
+<button className="admin-form__button" type="submit" disabled={saving || uploading}>
+  {saving ? "Guardando…" : "Guardar producto"}
+</button>
 
-      {msg ? <div className="admin-form__msg">{msg}</div> : null}
-    </form>
+{/* Mensaje normal (para fallback o errores menores) */}
+{msg && !msg.includes("✅") && (
+  <div className="admin-form__msg">{msg}</div>
+)}
+
+{/* Toast flotante (éxitos y errores importantes) */}
+{msg && (
+  <div
+    role="status"
+    style={{
+      position: "fixed",
+      left: "50%",
+      bottom: 24,
+      transform: "translateX(-50%)",
+      background: msg.startsWith("Error") ? "#b00020" : "#222",
+      color: "#fff",
+      padding: "10px 14px",
+      borderRadius: 8,
+      boxShadow: "0 6px 20px rgba(0,0,0,.2)",
+      fontWeight: 600,
+      fontSize: "0.95rem",
+      zIndex: 9999,
+    }}
+  >
+    {msg}
+  </div>
+)}
+</form>
   );
 }
