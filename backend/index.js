@@ -64,7 +64,11 @@ const productsLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
 });
-app.use("/products", productsLimiter, productsRouter);
+app.use(
+  ["/products", "/api/products"],
+  productsLimiter,
+  productsRouter
+);
 
 /* -------------------------
    Manejador de errores
