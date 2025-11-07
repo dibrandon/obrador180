@@ -1,5 +1,5 @@
-import "dotenv/config.js";
 import express from "express";
+import "dotenv/config.js";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";

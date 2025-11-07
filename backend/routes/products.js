@@ -1,9 +1,13 @@
 import { Router } from "express";
 import Product from "../models/Product.js";
+import { adminAuth } from "../middleware/adminAuth.js";
 
 const router = Router();
 
-// GET /products
+/**
+ * GET /products
+ * Público — devuelve solo productos activos.
+ */
 router.get("/", async (req, res, next) => {
   try {
     const items = await Product.find({ isActive: true }).sort({ createdAt: -1 });
@@ -13,8 +17,11 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// POST /products
-router.post("/", async (req, res, next) => {
+/**
+ * POST /products
+ * Requiere adminAuth.
+ */
+router.post("/", adminAuth, async (req, res, next) => {
   try {
     const { name, price, description = "", image = "", isActive = true } = req.body;
 
@@ -23,7 +30,7 @@ router.post("/", async (req, res, next) => {
 
     if (!hasName || !isNumber) {
       return res.status(400).json({
-        error: "Campos inválidos: 'name' (string) y 'price' (number >= 0) son obligatorios."
+        error: "Campos inválidos: 'name' (string) y 'price' (number >= 0) son obligatorios.",
       });
     }
 
@@ -32,7 +39,7 @@ router.post("/", async (req, res, next) => {
       price,
       description: description.trim(),
       image: image.trim(),
-      isActive
+      isActive,
     });
 
     res.status(201).json(doc);
@@ -40,5 +47,68 @@ router.post("/", async (req, res, next) => {
     next(err);
   }
 });
+
+/**
+ * PUT /products/:id
+ * Requiere adminAuth.
+ * Edita nombre, descripción, precio o imagen.
+ */
+router.put("/:id", adminAuth, async (req, res, next) => {
+  try {
+    const { name, price, description, image } = req.body;
+    const update = {};
+
+    if (typeof name === "string") update.name = name.trim();
+    if (typeof description === "string") update.description = description.trim();
+    if (typeof image === "string") update.image = image.trim();
+    if (typeof price === "number" && Number.isFinite(price)) update.price = price;
+
+    const doc = await Product.findByIdAndUpdate(req.params.id, update, { new: true });
+    if (!doc) return res.status(404).json({ error: "Producto no encontrado." });
+
+    res.json(doc);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// DELETE /products/:id (baja lógica)
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updated = await Product.findByIdAndUpdate(
+      id,
+      { isActive: false },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+    res.json({ ok: true, id });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Solo admin:
+router.get("/inactive", adminAuth, async (req, res, next) => {
+  try {
+    const items = await Product.find({ isActive: false }).sort({ updatedAt: -1 });
+    res.json(items);
+  } catch (err) { next(err); }
+});
+
+router.put("/:id/restore", adminAuth, async (req, res, next) => {
+  try {
+    const doc = await Product.findByIdAndUpdate(
+      req.params.id,
+      { isActive: true },
+      { new: true }
+    );
+    if (!doc) return res.status(404).json({ error: "Producto no encontrado." });
+    res.json({ ok: true, id: doc._id });
+  } catch (err) { next(err); }
+});
+
 
 export default router;

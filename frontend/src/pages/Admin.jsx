@@ -1,11 +1,13 @@
-import AdminForm from '@/components/AdminForm';
+import AdminForm from "@/components/AdminForm";
+import AdminList from "@/components/AdminList";
 import "@/styles/admin.css";
-
 
 export default function AdminPage() {
   return (
-    <div className="admin-container">
+    <main className="container" style={{ padding: 16 }}>
       <AdminForm />
-    </div>
+      <div style={{ height: 24 }} />
+      <AdminList />
+    </main>
   );
 }
