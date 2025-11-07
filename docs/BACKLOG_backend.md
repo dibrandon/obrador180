@@ -1,184 +1,146 @@
-# ⚙️ Backlog Backend – Obrador 180 graus MVP
+# ⚙️ Backlog Backend — Obrador 180 graus (MVP)
+**Versión actual:** `v0.6 – API protegida con adminAuth y CRUD completo`  
+**Última actualización:** 7 nov 2025  
 
-> Plan de desarrollo técnico del **backend (API + base de datos)** del proyecto.  
-> Stack: Node.js, Express, Mongoose, MongoDB Atlas.  
-> Objetivo: proveer datos consistentes y seguros al frontend y habilitar un flujo de pedidos básico.
+> **Stack:** Node.js · Express · Mongoose · MongoDB Atlas  
+> **Objetivo:** ofrecer una API sólida, modular y segura, que sirva como base del flujo de catálogo y autogestión del obrador.
 
 ---
 
-## 🧭 Epic 1 – Configuración base y arquitectura
+## 📁 Estructura real del backend
 
-### 🎯 Meta
-Tener un servidor Express funcional, modular y conectado a MongoDB Atlas.
-
-### ✅ Tareas
-- [x] Inicializar `backend/` con `npm init -y`
-- [x] Instalar dependencias principales (`express`, `cors`, `dotenv`, `mongoose`)
-- [x] Definir `"type": "module"` en `package.json`
-- [x] Crear estructura de carpetas:
-```bash
-backend/
-├── models/
-├── routes/
-├── scripts/
-├── index.js
-└── .env
 ```
-- [x] Implementar servidor Express con middlewares base (`cors`, `express.json`)
-- [x] Endpoint `/health` para test rápido del servicio
-- [x] Conexión a MongoDB Atlas usando `dotenv`
-- [x] Validar que el servidor arranca en puerto 4000
 
-### 🧠 Notas
-- Mantener logs claros en consola (emoji + prefijo)
-- Separar responsabilidades desde el inicio (modelo / ruta / lógica)
-- `.env` no se versiona (añadido a `.gitignore`)
+backend/
+├─ middleware/
+│  ├─ adminAuth.js
+│  ├─ errorHandler.js
+│  └─ logger.js
+├─ models/
+│  └─ Product.js
+├─ routes/
+│  └─ products.js
+├─ scripts/
+│  └─ seedProducts.js
+├─ .env.example
+├─ .env
+├─ index.js
+└─ package.json
 
-### 🎯 Criterio de finalización
-Servidor responde correctamente a `/health` y mantiene conexión estable a Atlas.
-
----
-
-## 🧩 Epic 2 – Modelo y rutas de productos
-
-### 🎯 Meta
-Definir modelo `Product` y exponer endpoints REST básicos.
-
-### ✅ Tareas
-- [x] Crear `models/Product.js` con campos (ver ejemplo de esquema abajo).
-- [ ] Crear `routes/products.js` con:
-  - `GET /products` → lista todos los productos
-  - `POST /products` → crea un producto (modo admin)
-- [ ] Integrar rutas en `index.js` (`app.use("/products", productsRouter)`)
-- [x] Script `scripts/seedProducts.js` para crear productos iniciales
-- [ ] Testear con Postman o navegador (`http://localhost:4000/products`)
-- [ ] Crear índice en Mongo para `createdAt` (ordenar descendentemente)
-- [ ] Añadir validación de esquema con Mongoose (`required`, `trim`, `min`)
-
-### 🧠 Notas
-- No incluir campos “sensibles” ni autenticación aún (fase 2).
-- Mantener nombres simples (sin pluralización forzada).
-- Usar `timestamps: true` para simplificar seguimiento de creación/edición.
-
----
-🎯 Criterio de finalización
-
-GET /products devuelve lista completa desde Atlas
-y POST /products inserta registros válidos sin errores.
+````
 
 ---
 
-## 🔐 Epic 3 – Validación, errores y seguridad básica
+## 🧭 Épica 1 — Configuración base y arquitectura
 
-### 🎯 Meta
+**Meta:** servidor Express funcional y conectado a MongoDB Atlas.  
+**Estado actual:**
+- [x] Dependencias instaladas (`express`, `cors`, `dotenv`, `mongoose`, `express-rate-limit`)
+- [x] `"type": "module"` en `package.json`
+- [x] Middlewares base: `express.json()`, `cors` con whitelist desde `.env`
+- [x] Endpoint `/health` con estado de conexión Mongo
+- [x] Conexión Atlas y arranque en `PORT` (por defecto 4000)
 
-Proteger la API ante entradas incorrectas y registrar errores correctamente.
-
-### ✅ Tareas
-
-* [ ] Middleware `errorHandler` global con logs controlados
-* [ ] Validar campos en `POST /products` (nombre y precio obligatorios)
-* [ ] Manejar errores de conexión Mongo con `mongoose.connection.on("error")`
-* [ ] Agregar `try/catch` en rutas con respuesta estándar `{ error: "mensaje" }`
-* [ ] Sanitizar inputs (trim y escape en strings)
-* [ ] Configurar CORS con whitelist (localhost + dominio final)
-* [ ] Añadir rate-limit básico (express-rate-limit)
-* [ ] Preparar middleware `logger` (req.method + ruta + timestamp)
-
-### 🧠 Notas
-
-* Seguridad mínima para MVP → suficiente con limpieza de inputs y CORS.
-* Documentar respuestas esperadas en `docs/api_endpoints.md`.
-
-### 🎯 Criterio de finalización
-
-Ninguna ruta puede romper el servidor ante datos erróneos o repetidos.
+**Criterio de cierre:** `/health` responde correctamente con estado `"connected"`.
 
 ---
 
-## 📦 Epic 4 – Flujo de pedidos / Encargos (fase 2 opcional)
+## 🧩 Épica 2 — Modelo y rutas de productos
 
-### 🎯 Meta
+**Meta:** definir modelo `Product` y exponer endpoints REST básicos.  
+**Estado actual:**
+- [x] Modelo `Product` con `timestamps` y campos principales:
+  - `name`, `description`, `price`, `image`, `isActive`, `_seedTag`
+- [x] `GET /products` → lista activos (orden descendente)
+- [x] `POST /products` → alta protegida (admin)
+- [x] `PUT /products/:id` → edición protegida
+- [x] `DELETE /products/:id` → baja lógica (`isActive=false`)
+- [x] `GET /products/inactive` → listar archivados
+- [x] `PUT /products/:id/restore` → restaurar (`isActive=true`)
+- [x] Integración de rutas en `index.js` con rate-limit independiente
 
-Registrar encargos provenientes del frontend (no compra online, solo aviso).
-
-### ✅ Tareas
-
-* [ ] Crear modelo `Order` con:
-
-  ```js
-  { name, product, phone, message, createdAt }
-  ```
-* [ ] Endpoint `POST /orders` (guardar aviso de pedido)
-* [ ] Endpoint `GET /orders` (modo admin, autenticado)
-* [ ] Validar teléfono y nombre (regex simple)
-* [ ] Enviar notificación por correo (fase futura)
-* [ ] Crear script de limpieza de pedidos antiguos (opcional)
-
-### 🧠 Notas
-
-* No se procesa pago, solo registro.
-* Ordenar por fecha de creación descendente.
-* Planificado para versión 2.0 del MVP.
-
-### 🎯 Criterio de finalización
-
-Los pedidos se guardan en Mongo y son accesibles desde `/orders`.
+**Criterio de cierre:** CRUD funcional y consistente entre backend y panel admin.
 
 ---
 
-## ☁️ Epic 5 – Despliegue y mantenimiento
+## 🔐 Épica 3 — Validación, errores y seguridad básica
 
-### 🎯 Meta
+**Meta:** garantizar integridad de datos y coherencia de errores.  
+**Estado actual:**
+- [x] Middleware `adminAuth.js` basado en `Authorization: Basic`
+- [x] `errorHandler.js` → respuesta estándar `{ error: "mensaje" }`
+- [x] `logger.js` → log compacto con método/ruta/tiempo
+- [x] `express-rate-limit` aplicado por prefijo
+- [x] Validaciones mínimas en `POST /products`
+- [x] `try/catch` y control global de errores
+- [x] `mongoose.connection.on("error")` con salida limpia
 
-Tener el backend funcionando en entorno remoto (Render o similar).
-
-### ✅ Tareas
-
-* [ ] Crear cuenta en [Render](https://render.com/)
-* [ ] Subir repo conectado a GitHub
-* [ ] Configurar variables de entorno (`MONGO_URI`, `PORT`)
-* [ ] Elegir plan free (Web Service)
-* [ ] Verificar logs y respuesta en producción
-* [ ] Añadir endpoint `/health` público para monitoreo
-* [ ] Documentar URL final en README
-
-### 🧠 Notas
-
-* Asegurar que `CORS` permita dominio de Vercel.
-* Evitar dependencias nativas (solo JS puro).
-
-### 🎯 Criterio de finalización
-
-API pública funcionando y accesible por el frontend desplegado.
+**Criterio de cierre:** ningún input no validado rompe la API ni genera errores no capturados.
 
 ---
 
-## 🧾 Epic 6 – Documentación técnica
+## 🌱 Épica 4 — Seed y datos de ejemplo
 
-### 🎯 Meta
+**Meta:** disponer de un set reproducible de productos de prueba.  
+**Estado actual:**
+- [x] Script `scripts/seedProducts.js` con `_seedTag` identificador
+- [x] Limpieza controlada de seeds duplicados
 
-Registrar cómo funciona el backend y cómo mantenerlo.
-
-### ✅ Tareas
-
-* [x] Documentar en README: instalación y uso
-* [ ] Crear `docs/api_endpoints.md` con ejemplos de peticiones
-* [ ] Especificar estructura de modelos (`Product`, `Order`)
-* [ ] Incluir guía rápida de despliegue Render
-* [ ] Añadir checklist de QA de API
-* [ ] Actualizar bitácoras (`resumenDia2.md`, etc.)
-
-### 🎯 Criterio de finalización
-
-Cualquier desarrollador externo puede clonar, instalar y ejecutar el backend sin preguntar nada.
+**Criterio de cierre:** se puede regenerar el entorno de demo sin duplicidades.
 
 ---
 
-## 🧱 Estado del Backend
+## ☁️ Épica 5 — Despliegue y mantenimiento (en curso)
 
-**Versión actual:** `v0.3`
-**Avance estimado:** ~20 %
-**Última actualización:** 22 de octubre de 2025
+**Meta:** backend corriendo de forma estable en Render (free tier).  
+**Estado actual:**
+- [ ] Configuración Render conectada a GitHub
+- [ ] Variables de entorno (`MONGO_URI`, `ADMIN_KEY`, `ALLOWED_ORIGINS`, `PORT`)
+- [ ] Prueba de comunicación con frontend (Vercel)
+- [ ] Documentación de la URL final
+
+**Criterio de cierre:** API accesible para frontend en producción.
+
+---
+
+## 🧾 Épica 6 — Documentación técnica
+
+**Meta:** mantener trazabilidad del backend y facilitar su mantenimiento.  
+**Estado actual:**
+- [x] README raíz actualizado con scripts y estructura
+- [ ] `docs/api_endpoints.md` (resumen sin ejemplos de ejecución)
+- [ ] Guía rápida de despliegue en Render
+- [ ] Checklist QA final
+- [ ] Bitácoras sincronizadas (`resumenDiaX.md`)
+
+**Criterio de cierre:** el backend puede ser entendido y mantenido por cualquier desarrollador externo.
+
+---
+
+## 🔧 Variables de entorno (.env)
+
+```ini
+PORT=4000
+MONGO_URI=mongodb+srv://<user>:<pass>@<cluster>/<db>
+ADMIN_KEY=clave_super_duper_segura
+ALLOWED_ORIGINS=http://localhost:5173,https://obrador180.vercel.app
+````
+
+> **Nota:** el valor de `ADMIN_KEY` debe coincidir con `VITE_ADMIN_KEY` en el frontend para permitir operaciones protegidas.
+
+---
+
+## 📊 Estado general
+
+* **Versión:** `v0.6`
+* **Avance estimado:** ~80 %
+* **Pendientes para v0.7:**
+
+  * Deploy remoto (Render + Vercel)
+  * Documentación `api_endpoints.md`
+  * Endpoint `/orders` (fase experimental)
+
+> El backend se considera estable, con CRUD validado y seguridad mínima suficiente para entorno de producción limitada (MVP).
+> La prioridad pasa a ser el despliegue y las pruebas de comunicación con el frontend.
 
 ---
