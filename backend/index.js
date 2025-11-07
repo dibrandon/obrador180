@@ -1,5 +1,5 @@
 import express from "express";
-import "dotenv/config.js";
+import "dotenv/config";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";
@@ -9,6 +9,8 @@ import { logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
+// Render/Vercel
+app.set("trust proxy", 1);
 
 /* -------------------------
    Middlewares base

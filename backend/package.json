@@ -1,7 +1,7 @@
 {
   "name": "obrador180-backend",
-  "version": "1.0.0",
-  "description": "API backend para Obrador 180 graus — Express 5 + MongoDB + seguridad lista para producción.",
+  "version": "0.6",
+  "description": "API backend para Obrador 180 graus — Express  + MongoDB + seguridad lista para producción.",
   "type": "module",
   "main": "index.js",
   "scripts": {
