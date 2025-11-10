@@ -1,25 +1,38 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from "react";
+import { isAuthedLocally, verifyAdminKey } from "@/lib/api";
+
+function redirectToLogin() {
+  if (typeof window === "undefined") return;
+  const next = encodeURIComponent(
+    window.location.pathname + window.location.search
+  );
+  window.location.replace(`/admin/login?next=${next}`);
+}
 
 export default function AdminGuard({ children }) {
-  const kEnv = import.meta.env.VITE_ADMIN_KEY || '';
-  const params = useMemo(() => new URLSearchParams(window.location.search), []);
-  const kURL = params.get('k') || '';
+  const [status, setStatus] = useState("checking");
 
-  if (!kEnv) {
-    return (
-      <div className="admin-guard">
-        <h1>Admin deshabilitado</h1>
-        <p>Falta configurar <code>VITE_ADMIN_KEY</code> en el frontend.</p>
-      </div>
-    );
-  }
-  if (kURL !== kEnv) {
-    return (
-      <div className="admin-guard">
-        <h1>No autorizado</h1>
-        <p>Añade tu clave a la URL para continuar.</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!isAuthedLocally()) {
+        if (!cancelled) setStatus("denied");
+        redirectToLogin();
+        return;
+      }
+      const valid = await verifyAdminKey();
+      if (!valid) {
+        if (!cancelled) setStatus("denied");
+        redirectToLogin();
+        return;
+      }
+      if (!cancelled) setStatus("allowed");
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (status !== "allowed") return null;
   return children;
 }
