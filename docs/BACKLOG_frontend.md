@@ -1,35 +1,32 @@
 # 🎨 Backlog Frontend — Obrador 180 graus (MVP)  
-**Versión actual:** `v0.6 – Back-office funcional conectado`  
-**Última actualización:** 7 nov 2025  
+**Versión actual:** `v0.8.1 – Dashboard + Auth refinado + Auto-Sync`  
+**Última actualización:** 13 nov 2025  
 
-> **Stack:** React + Vite · CSS artesanal con variables · Mobile-first real · Sin frameworks visuales.  
-> **Modo de trabajo:** por **Bloques** (4×55’ + 5’ descanso) que empujan las **Épicas**.  
-> **Objetivo:** catálogo usable en móvil y **panel administrativo completo** para autogestión del cliente.
+> **Stack:** React + Vite · CSS artesanal · Mobile-first real · Sin frameworks visuales.  
+> **Modo de trabajo:** por **Bloques** (4×55’ + 5’ descanso).  
+> **Objetivo:** catálogo impecable en móvil y **panel administrativo fluido, estable y reactivo** para autogestión total del cliente.
 
 ---
 
 ## 🔧 Convenciones y flujo
 
-* **Bloques diarios:** 4 × (55’ foco + 5’ descanso).  
-* **Prioridad:** *MVP funcional > florituras visuales*.  
-* **Commits:** `type(scope): mensaje` (ej. `feat(frontend): …`).  
+* **Bloques diarios:** 4 × (55’ foco + 5’ descanso)  
+* **Prioridad:** *MVP funcional > estética avanzada*  
+* **Commits:** `type(scope): mensaje`  
 * **Versionado:**  
-  - `v0.5` → frontend conectado y visible  
-  - `v0.6` → CRUD administrativo completo  
-  - Próximo hito → `v0.7` (auth + dashboard)
+  - `v0.6` → CRUD completo  
+  - `v0.7` → Deploy + primeras mejoras de Auth  
+  - `v0.8.1` → Dashboard + Auto-Sync + Admin UX refinado  
 
 ---
 
-## 📁 Estructura de carpetas real
+## 📁 Estructura de carpetas real (actualizada)
 
-```
-
+```bash
 frontend/
 ├─ public/
 ├─ src/
 │  ├─ assets/
-│  │   └─ react.svg
-│  │
 │  ├─ components/
 │  │   ├─ AdminForm.jsx
 │  │   ├─ AdminList.jsx
@@ -40,15 +37,18 @@ frontend/
 │  │
 │  ├─ lib/
 │  │   ├─ api.js
-│  │   └─ uploadImage.js
+│  │   ├─ uploadImage.js
+│  │   └─ events.js      # NUEVO (auto-sync catálogo ↔ dashboard)
 │  │
 │  ├─ pages/
 │  │   ├─ Admin.jsx
+│  │   ├─ AdminLogin.jsx
+│  │   ├─ Dashboard.jsx  # NUEVO
 │  │   └─ NotFound.jsx
 │  │
 │  ├─ routes/
 │  │   ├─ AdminGuard.jsx
-│  │   └─ routes.jsx
+│  │   └─ routes.jsx      # actualizado con /admin/dashboard
 │  │
 │  ├─ styles/
 │  │   ├─ admin.css
@@ -63,105 +63,141 @@ frontend/
 │  └─ vite.config.js
 │
 └─ .env
-
-```
+````
 
 ---
 
 ## 🧾 Registro de decisiones (ADR breve)
 
-1. **Sin `index.css`** → eliminado; se importan capas explícitas en `main.jsx`.  
-2. **Grid > Flexbox** → catálogo 2D y responsive real.  
-3. **Pre-boot de densidad** en `index.html` (sin FOUC).  
-4. **Imágenes `object-fit: cover`** → cards uniformes y consistentes.  
-5. **Cloudinary unsigned** → preset `obrador_products` con auto-upload.  
-6. **Autenticación básica** → `VITE_ADMIN_KEY` en rutas mutadoras.  
-7. **AdminForm y AdminList** comparten estilo unificado (`admin.css`).  
-8. **Estética “roco abuela noventas”**: fondo cálido, salmón pastel y dorados art déco.  
+1. **Sin `index.css`** → importación explícita de layers en `main.jsx`.
+2. **Grid > Flexbox** → catálogo consistente en todas las densidades.
+3. **Pre-boot densidad** en `index.html` (evita FOUC).
+4. **Cloudinary unsigned** → cero fricción en el upload.
+5. **Autenticación básica refinada** → AdminLogin + AdminGuard + verify + offline mode.
+6. **apiFetch unificado** → manejo de `network`, `offline`, `unauthorized`.
+7. **Nuevo sistema de eventos** → `emitStatsChanged` / `subscribeStatsChanged`.
+8. **Dashboard reactivo** → actualización inmediata sin recargar la SPA.
+9. **Rutas admin ordenadas** → `/admin`, `/admin/login`, `/admin/dashboard`.
+10. **Estética “roco abuela noventas”**: coherencia visual en botones, cards y spacing.
 
 ---
 
 ## ✅ Estado actual
 
-* Catálogo público conectado y responsive.  
-* Subida de imágenes a Cloudinary (unsigned preset).  
-* Panel admin completo:
-  - Alta (`AdminForm`) con validaciones y upload automático.  
-  - Edición, baja y restauración (`AdminList`).  
-* API frontend unificada (`api.js` + `handle()` común).  
-* Estilos coherentes mobile-first y UI limpia.  
-* Feedback visual con toasts, loaders y mensajes contextuales.  
+### 🟢 Funcionalidades completas
 
-**Versión:** `v0.6` · **Avance:** ≈ 85 % · **Fecha:** 7 nov 2025  
+* Catálogo público conectado al backend.
+* Subida y renderizado de imágenes (Cloudinary).
+* Panel admin completo con SSR-like UX:
+
+  * Crear producto
+  * Editar
+  * Archivar (baja lógica)
+  * Restaurar
+* Login admin funcional con clave persistente.
+* AdminGuard robusto (offline mode incluido).
+
+### 🟢 Novedades v0.8.1
+
+* **Dashboard administrativo real** con:
+
+  * activos
+  * archivados
+  * total
+  * última modificación
+* **Auto-sync catálogo ↔ dashboard** (eventos globales).
+* **apiFetch** integrado con:
+
+  * cache-control automático
+  * headers admin
+  * gestión diferenciada de errores
+* **UX de navegación SPA** totalmente fluida.
+
+**Versión:** `v0.8.1` · **Avance:** ≈ 90 % · **Fecha:** 13 nov 2025
 
 ---
 
-## 🧱 Bloques del Día 5
+## 🧱 Bloques del Día 8 (completados)
 
-**B1:** Integrar Cloudinary auto-upload.  
-**B2:** Refinar UX + estilos admin.  
-**B3:** CRUD completo (edit/baja/restore).  
-**B4:** QA + commits finales + documentación (`resumenDia5.md`).
+**B1:** Implementación AdminLogin + persistencia clave + verify.
+**B2:** Creación de Dashboard y ruta `/admin/dashboard`.
+**B3:** Sistema de eventos globales (auto-sync).
+**B4:** QA completo (sync, ping, stats, navegación).
 
 ---
 
 ## 🧭 Épicas y tareas
 
-### ÉPICA 1 – Catálogo público  
-- [x] Grid responsive de productos activos.  
-- [x] Precio formateado (EUR).  
-- [x] CTA WhatsApp con mensaje dinámico.  
-- [ ] Filtro o búsqueda básica *(posv. 0.7)*.  
+### ÉPICA 1 – Catálogo público
 
-### ÉPICA 2 – Back-office  
-- [x] AdminForm con validaciones y subida Cloudinary.  
-- [x] AdminList con edición en línea.  
-- [x] Baja lógica (`isActive=false`).  
-- [x] Restauración de productos archivados.  
-- [x] Integración con backend protegido (`ADMIN_KEY`).  
-- [ ] Dashboard de métricas *(v0.7)*.  
-- [ ] Login y sesión *(v0.7)*.  
+* [x] Grid responsive de productos activos
+* [x] Precio formateado (EUR)
+* [x] CTA WhatsApp
+* [ ] Home / Hero público *(v0.9)*
+* [ ] Filtro o búsqueda básica *(post-MVP)*
 
-### ÉPICA 3 – Estilo y experiencia  
-- [x] Unificación de estilos admin/public.  
-- [x] Refinamiento mobile (viewport, tipografía, spacing).  
-- [ ] Mejoras desktop grid *(v0.7)*.  
-- [ ] Footer con versión y branding *(v0.7)*.  
+---
+
+### ÉPICA 2 – Back-office
+
+* [x] AdminForm con validaciones + upload
+* [x] AdminList con edición/baja/restore
+* [x] Integración con backend protegido
+* [x] Nuevo AdminLogin (/admin/login)
+* [x] AdminGuard refinado (offline + verify)
+* [x] **Dashboard con stats reales**
+* [x] **Auto-sync catálogo ↔ Dashboard**
+* [ ] Confirm dialogs (bajas/restore)
+* [ ] Mejoras visuales importantes (v0.9)
+
+---
+
+### ÉPICA 3 – Estilo y experiencia
+
+* [x] Unificación estética admin/public
+* [x] Refinamiento mobile-first
+* [ ] Mejora visual desktop (v0.9)
+* [ ] Footer con versión (v0.9)
+* [ ] Identidad visual definitiva (post-MVP)
 
 ---
 
 ## 🧪 Criterios globales
 
-* Mobile-first real (sin saltos de layout).  
-* Persistencia local (`localStorage`) para preferencias.  
-* Llamadas asíncronas seguras con feedback visual.  
-* UI predecible para usuarios no técnicos.  
-* Navegación sin FOUC ni glitches.  
+* Mobile-first real
+* UX sin recargas
+* Estados claros de carga / error
+* Persistencia local
+* SPA 100 % consistente
+* Admin accesible para usuarios no técnicos
 
 ---
 
-## 📌 Próximos pasos (v0.7)
+## 📌 Próximos pasos (v0.9)
 
-1. 🔐 Implementar login simple (JWT o clave admin).  
-2. 📊 Dashboard básico (productos activos, archivados, últimos cambios).  
-3. 🖥️ Refinar vista desktop y tipografía global.  
-4. 🧾 Footer con versión (`v0.7`) y enlace a WhatsApp Business.  
-5. 🌐 Deploy dual (Vercel + Render).  
+1. 🎨 Mejora visual del panel admin
+2. 🖼 Home público (presentación + CTA WhatsApp)
+3. 🧾 Footer con versión + branding
+4. 📱 Ajustes responsive desktop
+5. 💬 Confirmaciones modales para acciones destructivas
 
 ---
 
 ## 🧊 Icebox / Diferido (post-MVP)
 
-* Página “Sobre nosotros”.  
-* Página “Contacto”.  
-* Filtros avanzados por tipo de producto.  
-* Animaciones sutiles (Framer Motion).  
-* Analítica básica (Matomo / Plausible).  
-* Internacionalización (ES / CAT).  
+* Página “Sobre nosotros”
+* Página “Contacto”
+* Filtros avanzados
+* Animaciones suaves
+* Analítica básica
+* Internacionalización (ES / CAT)
 
 ---
 
-📦 **Estado general:**  
-Frontend listo para cierre de bloque 2 (`v0.6`).  
-Próximo sprint → **v0.7: Dashboard + Auth + Deploy.**
+📦 **Estado general:**
+Frontend estable, conectado, autenticado y con Dashboard reactivo (`v0.8.1`).
+Próximo sprint → **v0.9: Home público + mejora visual del panel admin**.
+
 ```
+
+---
