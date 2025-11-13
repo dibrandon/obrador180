@@ -6,16 +6,16 @@ import {
   clearAdminKey,
 } from "@/lib/api";
 
-function resolveNextDestination() {
-  if (typeof window === "undefined") return "/admin";
+function resolveNextDestination(defaultPath = "/admin") {
+  if (typeof window === "undefined") return defaultPath;
   try {
     const url = new URL(window.location.href);
     const rawNext = url.searchParams.get("next");
-    if (!rawNext) return "/admin";
+    if (!rawNext) return defaultPath;
     const decoded = decodeURIComponent(rawNext);
-    return decoded.startsWith("/") ? decoded : "/admin";
+    return decoded.startsWith("/") ? decoded : defaultPath;
   } catch {
-    return "/admin";
+    return defaultPath;
   }
 }
 
@@ -32,7 +32,9 @@ export default function AdminLogin() {
       if (isAuthedLocally()) {
         const result = await verifyAdminKey();
         if (result.ok) {
-          window.location.replace(resolveNextDestination());
+          window.location.replace(
+            resolveNextDestination("/admin/dashboard")
+          );
           return;
         }
         if (!cancelled && result.reason === "network") {
@@ -69,7 +71,7 @@ export default function AdminLogin() {
       setSubmitting(false);
       return;
     }
-    window.location.replace(resolveNextDestination());
+    window.location.replace(resolveNextDestination("/admin/dashboard"));
   };
 
   if (checking) {

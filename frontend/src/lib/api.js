@@ -194,6 +194,15 @@ export async function verifyAdminKey(options = {}) {
   }
 }
 
+export async function getAdminStats(options = {}) {
+  const res = await apiFetch("/admin/stats", {
+    method: "GET",
+    cache: "no-store",
+    signal: options.signal,
+  });
+  return handleResponse(res, "GET /admin/stats");
+}
+
 export async function getProducts() {
   const res = await fetch(resolveURL("/products"));
   return handleResponse(res, "GET /products");

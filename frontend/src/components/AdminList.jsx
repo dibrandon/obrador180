@@ -7,6 +7,7 @@ import {
   getInactiveProducts,
   restoreProduct,
 } from "@/lib/api";
+import { emitStatsChanged, subscribeStatsChanged } from "@/lib/events.js";
 
 export default function AdminList() {
   const [items, setItems] = useState([]);       // activos
@@ -31,9 +32,8 @@ export default function AdminList() {
 
   useEffect(() => {
     load();
-    const onChanged = () => load();
-    window.addEventListener("products:changed", onChanged);
-    return () => window.removeEventListener("products:changed", onChanged);
+    const unsubscribe = subscribeStatsChanged(() => load());
+    return unsubscribe;
   }, []);
 
   function startEdit(p) {
@@ -56,7 +56,7 @@ export default function AdminList() {
       });
       setEditId(null);
       setMsg("Cambios guardados ✅");
-      window.dispatchEvent(new CustomEvent("products:changed"));
+      emitStatsChanged();
       load();
     } catch (e) {
       setMsg("Error: " + e.message);
@@ -71,7 +71,7 @@ export default function AdminList() {
       setBusy(true);
       await del(`/products/${id}`);
       setMsg("Baja realizada ✅");
-      window.dispatchEvent(new CustomEvent("products:changed"));
+      emitStatsChanged();
       load();
     } catch (e) {
       setMsg("Error al dar de baja: " + e.message);
@@ -85,7 +85,7 @@ export default function AdminList() {
       setBusy(true);
       await restoreProduct(id);
       setMsg("Restaurado ✅");
-      window.dispatchEvent(new CustomEvent("products:changed"));
+      emitStatsChanged();
       load();
     } catch (e) {
       setMsg("Error al restaurar: " + e.message);

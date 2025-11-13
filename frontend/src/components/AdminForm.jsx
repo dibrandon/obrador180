@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { postJSON } from "@/lib/api";
 import { uploadImage } from "@/lib/uploadImage";
+import { emitStatsChanged } from "@/lib/events.js";
 
 export default function AdminForm() {
   const [name, setName] = useState("");
@@ -88,7 +89,7 @@ export default function AdminForm() {
       setMsg("Guardado ✅");
 
       // refrescar catálogo
-      window.dispatchEvent(new CustomEvent("products:changed"));
+      emitStatsChanged();
     } catch (e) {
       setMsg("Error: " + e.message);
     } finally {
