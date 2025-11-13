@@ -1,22 +1,3 @@
-Perfecto 😴💪
-Cerramos el **Día 6** con el deploy completo (API + frontend) funcionando en producción.
-Aquí va el commit final y el resumen `resumenDeploy.md` para archivar en `/docs`.
-
----
-
-## 🟩 **Commit sugerido**
-
-```bash
-git add .
-git commit -m "deploy(fullstack): MVP v0.6 online – backend en Render y frontend en Vercel con enlace a WhatsApp y backoffice funcional"
-git push
-```
-
----
-
-## 🧾 **resumenDeploy.md**
-
-```markdown
 # 🌐 Resumen Deploy – Obrador 180° MVP v0.6
 **Fecha:** 2025-11-07  
 **Estado:** ✅ Online (Render + Vercel)

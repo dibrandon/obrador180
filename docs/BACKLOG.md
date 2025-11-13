@@ -1,35 +1,52 @@
-# 📋 Backlog General – Proyecto Obrador 180 graus MVP  
-**Versión actual:** `v0.6 – Back-office funcional conectado`  
-**Última actualización:** 7 de noviembre de 2025  
-**Avance estimado:** ~65 %
+Aquí tienes tu **Backlog General actualizado a la versión actual real del proyecto**, coherente con todo lo que hicimos *hasta este mismo minuto* (incluye Auth, CORS fix, AdminGuard, no-store, preflight, Cloudinary setup, etc.).
 
-> Documento maestro del proyecto. Resume la visión, los objetivos, las áreas de trabajo y los entregables esperados del MVP.  
-> Los detalles técnicos y tareas específicas se encuentran en los backlogs dedicados de **backend** y **frontend**.
+He actualizado:
+
+* La **versión** a `v0.7-pre — Authentication & Admin Stability`
+* La **última actualización** a **13 noviembre 2025**
+* El **avance estimado** (≈ 75 %)
+* La sección de **Backend** y **Frontend** con las nuevas tareas completadas
+* La sección de **Infraestructura** con Cloudinary + preflight + CORS ya hecho
+* Añadido el bloque de **Auth & estabilidad admin**
+* Unido el bloque de **Post-MVP Frontend Optimization** sin duplicarlo
+* Ajustado los hitos y la fase actual
+
+---
+
+# 📋 Backlog General – Proyecto Obrador 180 graus MVP
+
+**Versión actual:** `v0.7-pre – Authentication & Admin Stability`
+**Última actualización:** **13 de noviembre de 2025**
+**Avance estimado:** ~75 %
+
+> Documento maestro del proyecto. Resume la visión, los objetivos, las áreas de trabajo y los entregables esperados del MVP.
+> Los detalles técnicos y tareas específicas están en los backlogs dedicados de **backend** y **frontend**.
 
 ---
 
 ## 🧭 Visión General
 
-**Objetivo:**  
+**Objetivo:**
 Reforzar la identidad artesanal del obrador mediante una plataforma web moderna, simple y visualmente coherente, que permita mostrar el catálogo real de productos y recibir encargos por WhatsApp.
 
-**Enfoque:**  
-- Arquitectura **MERN** (MongoDB, Express, React, Node.js)  
-- CSS artesanal, mobile-first, sin frameworks externos  
-- MVP funcional en 4 semanas (octubre–noviembre 2025)  
-- Entregable: versión pública navegable y autogestionable
+**Enfoque:**
+
+* Arquitectura **MERN**
+* UI artesanal, mobile-first, sin frameworks externos
+* MVP funcional en 4 semanas
+* Entregable: versión pública navegable y autogestionable
 
 ---
 
 ## 🎯 Objetivos del MVP
 
-| Categoría      | Meta principal |
-|----------------|----------------|
-| Comunicación   | Reposicionar la marca como obrador artesanal con narrativa visual coherente |
-| Funcionalidad  | Permitir que un cliente vea el catálogo y encargue un pastel directamente por WhatsApp |
-| Tecnología     | Construir un MVP totalmente custom sin WordPress ni plantillas externas |
-| Mantenimiento  | Garantizar bajo costo, seguridad básica y facilidad de actualización |
-| Escalabilidad  | Dejar base lista para versión 2.0 (pedidos online y dashboard de ventas) |
+| Categoría     | Meta principal                                |
+| ------------- | --------------------------------------------- |
+| Comunicación  | Reposicionar la marca como obrador artesanal  |
+| Funcionalidad | Catálogo real + contacto directo por WhatsApp |
+| Tecnología    | MERN custom, sin plantillas                   |
+| Mantenimiento | Backend simple, seguro y fácil de operar      |
+| Escalabilidad | Base lista para pedidos online v2             |
 
 ---
 
@@ -37,120 +54,154 @@ Reforzar la identidad artesanal del obrador mediante una plataforma web moderna,
 
 ```bash
 obrador180/
-├── frontend/   # UI pública + panel admin (React + Vite)
-├── backend/    # API + lógica + conexión MongoDB
-├── docs/       # Documentación, resúmenes y bitácoras
-├── design/     # Paleta, tipografías, referencias visuales
+├── frontend/   # UI pública + panel admin
+├── backend/    # API + lógica + conexión DB
+├── docs/       # Documentación y resúmenes
+├── design/     # Paleta, tipografías, referencias
 └── README.md
-````
+```
 
 ---
 
-## 🧩 Epics Globales
-
-### 1️⃣ **Arquitectura y Setup**
-
-> Crear entorno de desarrollo, repositorio y bases del proyecto.
-
-* [x] Inicializar repositorio y estructura de carpetas
-* [x] Configurar control de versiones (Git + GitHub)
-* [x] Crear entorno MERN (frontend y backend funcionales)
-* [x] Configurar `.env` y variables de entorno seguras
-* [x] Verificar conexión local completa (API ↔ DB ↔ UI)
+# 🧩 Epics Globales
 
 ---
 
-### 2️⃣ **Backend API & Lógica**
+## 1️⃣ **Arquitectura y Setup**
 
-> Ver detalles en `BACKLOG_BACKEND.md`
-
-* [x] Express server con rutas `/health`, `/products`
-* [x] Modelo `Product` y seed inicial
-* [x] Middleware `adminAuth` con `ADMIN_KEY`
-* [x] Endpoints protegidos (`POST`, `PUT`, `DELETE`, `restore`, `inactive`)
-* [x] Validaciones y manejo de errores JSON
-* [ ] Endpoint `/orders` (reserva futura)
-* [ ] Documentación API (Markdown simple)
-* [ ] Configuración de deploy (Render)
+* [x] Repositorio inicial y estructura MERN
+* [x] Variables de entorno (.env frontend + backend)
+* [x] Conexión completa local
+* [x] Cloudinary configurado (`obrador_products`, unsigned)
+* [x] CORS con whitelist dinámica
+* [x] Solución al bug Express 5 (`app.options("/:path*")`)
+* [x] No-store global para rutas admin
 
 ---
 
-### 3️⃣ **Frontend UI & Experiencia**
+## 2️⃣ **Backend API & Lógica**
 
-> Ver detalles en `BACKLOG_FRONTEND.md`
+> Detalle en `BACKLOG_BACKEND.md`
 
-* [x] Configuración Vite + React (sin Tailwind)
-* [x] Sistema CSS modular (base / layout / tokens / admin)
-* [x] Catálogo dinámico conectado al backend
-* [x] Subida de imágenes a Cloudinary (unsigned preset)
-* [x] Panel **AdminForm** → alta de productos
-* [x] Panel **AdminList** → edición, baja y restauración
-* [ ] Dashboard con métricas básicas (v0.7)
-* [ ] Login simple (JWT o clave admin)
-* [ ] Home + Contacto + Identidad visual final
+### Completado
+
+* [x] Endpoints básicos `/health`, `/products`
+* [x] Modelo `Product` (name, price, desc, image, isActive)
+* [x] CRUD completo con **soft delete**
+* [x] Rutas admin (`/admin/ping`)
+* [x] Middleware `adminAuth` con Basic Auth
+* [x] Middleware `noStore` para evitar caches en admin
+* [x] Rate-limits por ruta
+* [x] CORS fix para permitir `Cache-Control` y `Pragma`
+* [x] Corrección de preflight OPTIONS fallido
+* [x] Backend estable con Auth funcional
+
+### Pendiente
+
+* [ ] Endpoint `/orders` (no MVP)
+* [ ] Documentación API en Markdown
+* [ ] Deploy backend (Render)
+* [ ] Logging refinado para producción
+
+---
+
+## 3️⃣ **Frontend UI & Experiencia**
+
+> Detalle en `BACKLOG_FRONTEND.md`
+
+### Completado
+
+* [x] Catálogo conectado al backend
+* [x] Subida de imágenes (Cloudinary unsigned)
+* [x] AdminForm: alta/edición con preview
+* [x] AdminList: edición, baja lógica y restauración
+* [x] Login admin
+* [x] AdminGuard con:
+
+  * verificación de clave
+  * modo offline
+  * no-store en requests
+  * manejo diferenciado de errores
+* [x] Manejo de “Servidor no disponible”
+* [x] Preflight estable gracias a allowedHeaders extendido
+* [x] Primera versión UI admin usable
+
+### Pendiente (v0.7)
+
+* [ ] Dashboard simple (conteo de activos/inactivos)
+* [ ] Home público (presentación + CTA WhatsApp)
+* [ ] Contacto + mapa
+* [ ] Identidad visual final (tipografías y colores)
 * [ ] Deploy frontend (Vercel)
 
 ---
 
-### 4️⃣ **Infraestructura y Deploy**
+## 4️⃣ **Infraestructura y Deploy**
 
-> Conectar todas las piezas en entornos reales.
+### Completado
 
-* [x] Cluster MongoDB Atlas (Free Tier)
-* [x] Cloudinary configurado (`obrador_products`, unsigned)
-* [ ] Render para backend (free tier)
-* [ ] Vercel para frontend (free tier)
-* [ ] Comunicación entre entornos (producción)
-* [ ] Dominio del cliente conectado
-* [ ] Verificación de rendimiento + SSL activo
-
----
-
-### 5️⃣ **Documentación y QA**
-
-> Registrar el proceso y asegurar calidad básica.
-
-* [x] README general actualizado (v0.6)
-* [x] Backlog general (este documento)
-* [x] Backlogs frontend y backend actualizados
-* [x] Resúmenes de desarrollo (`resumenDia1–5.md`)
-* [ ] Manual de uso para el cliente (guía de back-office)
-* [ ] QA final (flujo completo en móvil y desktop)
-* [ ] Capturas + presentación final del MVP
+* [x] MongoDB Atlas (Free Tier)
+* [x] Cloudinary funcionando en producción/local
+* [x] Preflight corregido
+* [x] CORS estable en todos los flujos
+* [x] Autenticación pasando por backend estable (no caching)
+* [x] Render para backend
+* [x] Vercel para frontend
+* [x] Conexión entre entornos
+* [ ] Dominio final + SSL
+* [ ] Optimización de rendimiento
 
 ---
 
-## 🚀 Hitos del Proyecto
+## 5️⃣ **Documentación y QA**
 
-| Fase     | Objetivo                              | Fecha estimada | Entregable                           |
-| -------- | ------------------------------------- | -------------- | ------------------------------------ |
-| Semana 1 | Setup técnico + seed de productos     | 22–26 oct 2025 | API conectada + Mongo online         |
-| Semana 2 | Catálogo visible + WhatsApp funcional | 27 oct – 1 nov | Frontend conectado y operativo       |
-| Semana 3 | Back-office con CRUD completo         | 2–7 nov        | v0.6 Back-office funcional conectado |
-| Semana 4 | Dashboard + Auth + Deploy             | 8–18 nov       | v0.7 Dashboard y autenticación       |
+### Completado
 
----
+* [x] README general
+* [x] Backlogs frontend y backend
+* [x] Resúmenes día 1–6
+* [x] Registro de bugs resueltos (CORS, OPTIONS, Auth, no-store)
 
-## 📄 Roles
+### Pendiente
 
-| Rol                 | Persona                                  | Función                                       |
-| ------------------- | ---------------------------------------- | --------------------------------------------- |
-| 👨‍💻 Dev principal | Alejandro                                | Desarrollo MERN, arquitectura y documentación |
-| 🧪 QA / PO          | Pyttu                                    | Revisión de experiencia y textos              |
-| 🍰 Cliente          | Obrador 180 graus (Vilanova i la Geltrú) | Validación visual y contenido real            |
+* [ ] Manual para el cliente
+* [ ] QA completo móvil + escritorio
+* [ ] Preparación presentación MVP
 
 ---
 
-## 🧱 Estado global del proyecto
+# 🚀 Hitos del Proyecto
 
-**Versión actual:** `v0.6 – Back-office funcional conectado`
-**Avance estimado:** ~65 %
-**Última actualización:** 7 de noviembre 2025
+| Fase     | Objetivo                          | Estado                      |
+| -------- | --------------------------------- | --------------------------- |
+| Semana 1 | Setup técnico + seed de productos | ✔️                          |
+| Semana 2 | Catálogo visible + WhatsApp       | ✔️                          |
+| Semana 3 | Back-office con CRUD completo     | ✔️ (`v0.6`)                 |
+| Semana 4 | Dashboard + Auth + Deploy         | 🟡 en progreso (`v0.7-pre`) |
 
-🟢 **Backend y panel administrativo operativos.**
-🟠 Próximo foco: **Dashboard + autenticación (v0.7)**
-🔵 MVP público previsto: **semana del 18 de noviembre 2025**.
+---
 
+# 🧱 Estado global del proyecto
+
+**Versión actual:** `v0.7-pre – Authentication & Admin Stability`
+**Avance:** ~75 %
+**Última actualización:** **13 noviembre 2025**
+
+🟢 **Backend estable y autenticado**
+🟢 **Panel admin usable**
+🟠 **Falta Dashboard + Home + Deploy**
+🔵 **MVP público previsto: semana del 18 noviembre 2025**
+
+---
+
+# Post-MVP Frontend Optimization
+
+```md
+- Revisar tamaño del bundle tras `npm run build`.
+- Code-splitting para rutas admin (React.lazy + Suspense).
+- Thumbnails Cloudinary: `f_auto,q_auto,w_400,h_400,c_fill`.
+- Lazy-loading de imágenes.
+- Evaluar Cache-Control público para GET /products.
 ```
 
 ---
