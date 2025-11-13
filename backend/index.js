@@ -5,6 +5,7 @@ import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";
 
 import productsRouter from "./routes/products.js";
+import adminRouter from "./routes/admin.js";
 import { logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -23,17 +24,31 @@ const WHITELIST = (process.env.ALLOWED_ORIGINS || "")
   .map(o => o.trim())
   .filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, cb) => {
-      if (!origin || WHITELIST.includes(origin)) return cb(null, true);
-      return cb(new Error("CORS bloqueado"), false);
-    },
-  })
-);
+const corsOptions = {
+  origin: (origin, cb) => {
+    if (!origin || WHITELIST.includes(origin)) return cb(null, true);
+    return cb(new Error("CORS bloqueado"), false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Cache-Control",
+    "Pragma",
+  ],
+  maxAge: 0,
+};
+
+app.use(cors(corsOptions));
 
 // Logger global
 app.use(logger);
+
+/* -------------------------
+   Rutas admin
+------------------------- */
+app.use("/admin", adminRouter);
 
 /* -------------------------
    Rutas sin limitador

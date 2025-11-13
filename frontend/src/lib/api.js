@@ -14,6 +14,7 @@ function safeGetStorage(getter) {
 
 const sessionStore = safeGetStorage(() => window.sessionStorage);
 const localStore = safeGetStorage(() => window.localStorage);
+const NETWORK_ERROR_MESSAGE = "Servidor no disponible. Intenta nuevamente.";
 
 function readKey(store) {
   if (!store) return "";
@@ -116,10 +117,24 @@ function adminHeaders(extra = {}) {
   return headers;
 }
 
-export function apiFetch(path, init = {}) {
+export async function apiFetch(path, init = {}) {
   const headers = adminHeaders(init.headers || {});
   const url = resolveURL(path);
-  return fetch(url, { ...init, headers });
+  const requestInit = { ...init, headers };
+
+  if (headers.has("Authorization") && !requestInit.cache) {
+    requestInit.cache = "no-store";
+  }
+
+  try {
+    return await fetch(url, requestInit);
+  } catch (error) {
+    console.error(`[apiFetch] ${requestInit.method || "GET"} ${url}`, error);
+    const networkError = new Error(NETWORK_ERROR_MESSAGE);
+    networkError.code = "NETWORK";
+    networkError.cause = error;
+    throw networkError;
+  }
 }
 
 async function handleResponse(res, ctx = "") {
@@ -137,32 +152,45 @@ async function handleResponse(res, ctx = "") {
     const msg =
       (data && (data.error || data.message)) ||
       text ||
-      `${ctx || "HTTP"} ${res.status}`;
-    throw new Error(msg);
+      (res.status === 0 ? NETWORK_ERROR_MESSAGE : `${ctx || "HTTP"} ${res.status}`);
+    const error = new Error(msg);
+    error.status = res.status;
+    error.context = ctx;
+    throw error;
   }
   return data;
 }
 
-export async function verifyAdminKey() {
+export async function verifyAdminKey(options = {}) {
   const key = getAdminKey();
-  if (!key) return false;
+  if (!key) return { ok: false, reason: "missing" };
 
   try {
-    // Usamos un endpoint ADMIN que ya existe y está protegido por adminAuth
-    // así evitamos depender de /admin/ping por ahora.
-    const res = await apiFetch("/products/inactive", { method: "GET" });
+    const res = await apiFetch(`/admin/ping?__ts=${Date.now()}`, {
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+      signal: options.signal,
+    });
 
     if (res.status === 401) {
-      // Clave incorrecta → limpiamos sesión para que el guard te lleve a /admin/login
       clearAdminKey();
-      return false;
+      return { ok: false, reason: "unauthorized" };
     }
 
-    // 200 => clave válida
-    return res.ok;
-  } catch {
-    // Error de red u otro → tratamos como no válido
-    return false;
+    if (res.ok || res.status === 304) {
+      return { ok: true };
+    }
+
+    return { ok: false, reason: "http", status: res.status };
+  } catch (error) {
+    if (error.code === "NETWORK") {
+      return { ok: false, reason: "network" };
+    }
+    return { ok: false, reason: "error", error };
   }
 }
 

@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { isAuthedLocally, setAdminKey, verifyAdminKey } from "@/lib/api";
+import {
+  isAuthedLocally,
+  setAdminKey,
+  verifyAdminKey,
+  clearAdminKey,
+} from "@/lib/api";
 
 function resolveNextDestination() {
   if (typeof window === "undefined") return "/admin";
@@ -25,10 +30,13 @@ export default function AdminLogin() {
     let cancelled = false;
     (async () => {
       if (isAuthedLocally()) {
-        const ok = await verifyAdminKey();
-        if (ok) {
+        const result = await verifyAdminKey();
+        if (result.ok) {
           window.location.replace(resolveNextDestination());
           return;
+        }
+        if (!cancelled && result.reason === "network") {
+          setErr("Servidor no disponible. Intenta nuevamente en unos minutos.");
         }
       }
       if (!cancelled) setChecking(false);
@@ -48,10 +56,16 @@ export default function AdminLogin() {
     }
     setSubmitting(true);
     setAdminKey(trimmed, { remember });
-    const ok = await verifyAdminKey();
-    if (!ok) {
-      setAdminKey("", { remember: false });
-      setErr("Clave inválida o sin permisos.");
+    const result = await verifyAdminKey();
+    if (!result.ok) {
+      if (result.reason === "unauthorized") {
+        clearAdminKey();
+        setErr("Clave inválida o sin permisos.");
+      } else if (result.reason === "network") {
+        setErr("Servidor no disponible. Intenta nuevamente en unos minutos.");
+      } else {
+        setErr("No se pudo verificar la clave. Reintenta.");
+      }
       setSubmitting(false);
       return;
     }

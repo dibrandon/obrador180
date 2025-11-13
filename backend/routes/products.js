@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Product from "../models/Product.js";
 import { adminAuth } from "../middleware/adminAuth.js";
+import { noStore } from "../middleware/noStore.js";
 
 const router = Router();
 
@@ -21,7 +22,7 @@ router.get("/", async (req, res, next) => {
  * POST /products
  * Requiere adminAuth.
  */
-router.post("/", adminAuth, async (req, res, next) => {
+router.post("/", adminAuth, noStore, async (req, res, next) => {
   try {
     const { name, price, description = "", image = "", isActive = true } = req.body;
 
@@ -53,7 +54,7 @@ router.post("/", adminAuth, async (req, res, next) => {
  * Requiere adminAuth.
  * Edita nombre, descripción, precio o imagen.
  */
-router.put("/:id", adminAuth, async (req, res, next) => {
+router.put("/:id", adminAuth, noStore, async (req, res, next) => {
   try {
     const { name, price, description, image } = req.body;
     const update = {};
@@ -73,7 +74,7 @@ router.put("/:id", adminAuth, async (req, res, next) => {
 });
 
 // DELETE /products/:id (baja lógica)
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", adminAuth, noStore, async (req, res, next) => {
   try {
     const { id } = req.params;
     const updated = await Product.findByIdAndUpdate(
@@ -91,14 +92,14 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 // Solo admin:
-router.get("/inactive", adminAuth, async (req, res, next) => {
+router.get("/inactive", adminAuth, noStore, async (req, res, next) => {
   try {
     const items = await Product.find({ isActive: false }).sort({ updatedAt: -1 });
     res.json(items);
   } catch (err) { next(err); }
 });
 
-router.put("/:id/restore", adminAuth, async (req, res, next) => {
+router.put("/:id/restore", adminAuth, noStore, async (req, res, next) => {
   try {
     const doc = await Product.findByIdAndUpdate(
       req.params.id,

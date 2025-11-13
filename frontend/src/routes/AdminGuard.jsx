@@ -11,6 +11,7 @@ function redirectToLogin() {
 
 export default function AdminGuard({ children }) {
   const [status, setStatus] = useState("checking");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -20,9 +21,19 @@ export default function AdminGuard({ children }) {
         redirectToLogin();
         return;
       }
-      const valid = await verifyAdminKey();
-      if (!valid) {
-        if (!cancelled) setStatus("denied");
+      const result = await verifyAdminKey();
+      if (!result.ok) {
+        if (result.reason === "network") {
+          if (!cancelled) {
+            setStatus("offline");
+            setMessage("Servidor no disponible. Reintenta en unos minutos.");
+          }
+          return;
+        }
+        if (!cancelled) {
+          setStatus("denied");
+          setMessage("Sesión inválida. Inicia sesión nuevamente.");
+        }
         redirectToLogin();
         return;
       }
@@ -32,6 +43,14 @@ export default function AdminGuard({ children }) {
       cancelled = true;
     };
   }, []);
+
+  if (status === "offline") {
+    return (
+      <main className="container" style={{ padding: 24 }}>
+        <p style={{ textAlign: "center" }}>{message}</p>
+      </main>
+    );
+  }
 
   if (status !== "allowed") return null;
   return children;
