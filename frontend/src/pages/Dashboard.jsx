@@ -1,3 +1,4 @@
+// src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAdminStats } from "@/lib/api.js";
@@ -14,12 +15,12 @@ export default function Dashboard() {
     const fetchStats = () => {
       setStatus("loading");
       getAdminStats()
-        .then(data => {
+        .then((data) => {
           if (!isMounted) return;
           setStats(data);
           setStatus("ready");
         })
-        .catch(err => {
+        .catch((err) => {
           console.error("Dashboard stats error:", err);
           if (!isMounted) return;
           if (err?.code === "NETWORK") setStatus("offline");
@@ -38,26 +39,34 @@ export default function Dashboard() {
 
   if (status === "loading") {
     return (
-      <div style={{ padding: "1rem" }}>
-        <p>Cargando dashboard...</p>
+      <div className="admin-shell admin-shell--center">
+        <p className="admin-status-text">Cargando dashboard...</p>
       </div>
     );
   }
 
   if (status === "offline") {
     return (
-      <div style={{ padding: "1rem" }}>
-        <h1>Bienvenido, Obrador 180 graus</h1>
-        <p>Servidor no disponible. Intenta de nuevo en unos segundos.</p>
+      <div className="admin-shell admin-shell--center">
+        <div className="admin-card">
+          <h1 className="admin-form__title">Bienvenido, Obrador 180 graus</h1>
+          <p className="admin-status-text">
+            Servidor no disponible. Intenta de nuevo en unos segundos.
+          </p>
+        </div>
       </div>
     );
   }
 
   if (status === "error") {
     return (
-      <div style={{ padding: "1rem" }}>
-        <h1>Bienvenido, Obrador 180 graus</h1>
-        <p>Ocurrio un error al cargar las estadisticas.</p>
+      <div className="admin-shell admin-shell--center">
+        <div className="admin-card">
+          <h1 className="admin-form__title">Bienvenido, Obrador 180 graus</h1>
+          <p className="admin-status-text">
+            Ocurrió un error al cargar las estadísticas.
+          </p>
+        </div>
       </div>
     );
   }
@@ -65,40 +74,38 @@ export default function Dashboard() {
   const { active = 0, inactive = 0, total = 0, lastUpdate = null } = stats ?? {};
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h1>Bienvenido, Obrador 180 graus</h1>
+    <div className="admin-shell">
+      <header className="admin-header">
+        <h1 className="admin-header__title">Bienvenido, Obrador 180 graus</h1>
+        <div className="admin-header__actions">
+          <button
+            type="button"
+            className="admin-header__btn admin-header__btn--ghost"
+            onClick={() => navigate("/admin")}
+          >
+            Administrar productos
+          </button>
+        </div>
+      </header>
 
-      <section
-        style={{
-          marginTop: "1rem",
-          padding: "1rem",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-        }}
-      >
-        <h2>Dashboard</h2>
-        <p>
-          Productos activos: <strong>{active}</strong>
-        </p>
-        <p>
-          Archivados: <strong>{inactive}</strong>
-        </p>
-        <p>
-          Total: <strong>{total}</strong>
-        </p>
-        <p>
-          Ultima modificacion:{" "}
-          {lastUpdate ? new Date(lastUpdate).toLocaleString() : "---"}
-        </p>
-      </section>
-
-      <button
-        type="button"
-        style={{ marginTop: "1.5rem" }}
-        onClick={() => navigate("/admin")}
-      >
-        Administrar productos
-      </button>
+      <main className="admin-main">
+        <section className="admin-card" aria-label="Resumen de productos">
+          <h2 className="admin-card__title">Dashboard</h2>
+          <p>
+            Productos activos: <strong>{active}</strong>
+          </p>
+          <p>
+            Archivados: <strong>{inactive}</strong>
+          </p>
+          <p>
+            Total: <strong>{total}</strong>
+          </p>
+          <p>
+            Última modificación:{" "}
+            {lastUpdate ? new Date(lastUpdate).toLocaleString() : "---"}
+          </p>
+        </section>
+      </main>
     </div>
   );
 }

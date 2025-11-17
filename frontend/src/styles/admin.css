@@ -1,71 +1,175 @@
-/* --- Panel de administración limpio y mobile-friendly --- */
+/* --- Shell general del backoffice --- */
 
-body {
-  background: #f8f7f5; /* blanco cálido neutro */
-  color: #222;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.4;
+.admin-shell {
+  min-height: 100vh;
+  padding: 1.5rem 1.25rem;
+  background: var(--color-admin-bg, #f5f1ea);
+  color: var(--color-text-main, #2a2520);
+  display: flex;
+  flex-direction: column;
 }
 
-.admin-form {
+.admin-shell--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Header superior del admin */
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-header__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.admin-header__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-header__btn {
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--color-border-soft, #ccc);
+  background: var(--color-cta, #f74c6b);
+  color: var(--color-text-on-cta, #fff);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.admin-header__btn--ghost {
+  background: #fff;
+  color: var(--color-text-main, #2a2520);
+}
+
+.admin-header__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.admin-header__btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Contenido principal */
+
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-main__list {
+  margin-top: 0.5rem;
+}
+
+/* Tarjetas base (login, stats, etc.) + formulario admin */
+
+.admin-form,
+.admin-card {
   max-width: 420px;
   margin: 0 auto;
   padding: 1.5rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  background: var(--color-surface, #ffffff);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-soft, 0 2px 8px rgba(0, 0, 0, 0.06));
 }
+
+.admin-card__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+/* Título del formulario */
 
 .admin-form__title {
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 1.25rem;
   text-align: left;
-  color: #222;
+  color: var(--color-text-main, #2a2520);
 }
+
+/* Labels + campos */
 
 .admin-form__label {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
   font-weight: 500;
-  color: #333;
+  color: var(--color-text-soft, #4e4238);
 }
 
 .admin-form__input,
 .admin-form__textarea {
   margin-top: 0.35rem;
   padding: 0.65rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 1px solid var(--color-border-soft, #ccc);
+  border-radius: var(--radius-md, 8px);
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   background: #fff;
+}
+
+.admin-form__textarea {
+  min-height: 5rem;
+  resize: vertical;
 }
 
 .admin-form__input:focus,
 .admin-form__textarea:focus {
-  border-color: #007aff;
+  border-color: var(--color-focus, #f74c6b);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0,122,255,0.15);
+  box-shadow: 0 0 0 3px rgba(247, 76, 107, 0.18);
 }
+
+.admin-form__remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-soft, #4e4238);
+  margin-bottom: 0.75rem;
+}
+
+/* Botón principal formulario */
 
 .admin-form__button {
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
-  background: #222;
+  color: var(--color-text-on-cta, #ffffff);
+  background: var(--color-cta, #f74c6b);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-pill, 999px);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
 }
 
 .admin-form__button:hover:not(:disabled) {
-  background: #000;
+  background: var(--color-cta-strong, #c7133f);
+  box-shadow: 0 8px 20px rgba(199, 19, 63, 0.25);
+  transform: translateY(-1px);
+}
+
+.admin-form__button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-subtle, 0 2px 6px rgba(0, 0, 0, 0.08));
 }
 
 .admin-form__button:disabled {
@@ -73,28 +177,62 @@ body {
   cursor: not-allowed;
 }
 
+/* Mensajes */
+
 .admin-form__msg {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   font-size: 0.95rem;
-  color: #2e7d32; /* verde éxito */
 }
+
+.admin-form__msg--success {
+  color: #2e7d32;
+}
+
+.admin-form__msg--error {
+  color: #c62828;
+}
+
+/* Textos de estado / hints */
+
+.admin-status-text {
+  font-size: 0.95rem;
+  color: var(--color-text-soft, #4e4238);
+  text-align: center;
+}
+
+.admin-hint {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: #6b6b6b;
+}
+
+/* --- Responsivo --- */
 
 @media (max-width: 480px) {
-  .admin-form {
-    border-radius: 0;
-    min-height: 100vh;
-    padding-top: 2rem;
+  .admin-shell {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .admin-form,
+  .admin-card {
+    border-radius: 16px;
+    padding: 1.25rem;
   }
 }
 
-/* --- desktop --- */
 @media (min-width: 900px) {
-  body { background: #f3eee7; }            
-  .admin-form {
-    margin: 3rem auto;
-    padding: 2rem;
-    max-width: 560px;                       
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  .admin-shell {
+    padding: 3rem 1.5rem;
   }
-  .admin-form__title { font-size: 1.6rem; }
+
+  .admin-form,
+  .admin-card {
+    max-width: 560px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .admin-form__title {
+    font-size: 1.6rem;
+  }
 }

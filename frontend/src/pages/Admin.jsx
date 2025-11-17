@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import AdminForm from "@/components/AdminForm";
 import AdminList from "@/components/AdminList";
 import { clearAdminKey } from "@/lib/api";
-import "@/styles/admin.css";
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -17,55 +16,36 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="container" style={{ padding: 16 }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 16,
-          flexWrap: "wrap",
-        }}
-      >
-        <h1 style={{ margin: 0, fontSize: "1.25rem", fontWeight: 600 }}>
-          Panel administrador
-        </h1>
-        <div style={{ display: "flex", gap: 8 }}>
+    <div className="admin-shell">
+      <header className="admin-header">
+        <h1 className="admin-header__title">Panel administrador</h1>
+        <div className="admin-header__actions">
           <button
             type="button"
+            className="admin-header__btn admin-header__btn--ghost"
             onClick={goToDashboard}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: 8,
-              padding: "0.45rem 0.9rem",
-              background: "#fff",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
           >
             Volver al dashboard
           </button>
           <button
             type="button"
+            className="admin-header__btn"
             onClick={handleLogout}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: 8,
-              padding: "0.45rem 0.9rem",
-              background: "#fff",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
           >
             Salir
           </button>
         </div>
-      </div>
+      </header>
 
-      <AdminForm />
-      <div style={{ height: 24 }} />
-      <AdminList />
-    </main>
+      <main className="admin-main">
+        <section aria-label="Alta y edición de productos">
+          <AdminForm />
+        </section>
+
+        <section aria-label="Listado y gestión de productos" className="admin-main__list">
+          <AdminList />
+        </section>
+      </main>
+    </div>
   );
 }

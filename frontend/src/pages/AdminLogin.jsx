@@ -76,45 +76,56 @@ export default function AdminLogin() {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6">
-        <p className="text-sm text-gray-500">Verificando sesión...</p>
+      <div className="admin-shell admin-shell--center">
+        <p className="admin-status-text">Verificando sesión...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-sm rounded-2xl border p-6 space-y-4 bg-white">
-        <h1 className="text-xl font-semibold">Acceso administrador</h1>
-        <form onSubmit={onSubmit} className="space-y-3">
-          <input
-            type="password"
-            autoFocus
-            className="w-full border rounded-lg px-3 py-2"
-            placeholder="Clave admin"
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-          />
-          <label className="flex items-center gap-2 text-sm">
+    <div className="admin-shell admin-shell--center">
+      <div className="admin-card">
+        <h1 className="admin-form__title">Acceso administrador</h1>
+
+        <form onSubmit={onSubmit} className="admin-card__form">
+          <label className="admin-form__label">
+            Clave admin
+            <input
+              type="password"
+              autoFocus
+              className="admin-form__input"
+              placeholder="Clave admin"
+              value={key}
+              onChange={(e) => setKey(e.target.value)}
+            />
+          </label>
+
+          <label className="admin-form__remember">
             <input
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
             />
-            Recordarme en este dispositivo
+            <span>Recordarme en este dispositivo</span>
           </label>
-          {err && <p className="text-sm text-red-600">{err}</p>}
+
+          {err && (
+            <p className="admin-form__msg admin-form__msg--error">{err}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full rounded-lg px-3 py-2 border bg-black text-white hover:opacity-90 disabled:opacity-70"
+            className="admin-form__button"
             disabled={submitting}
           >
             {submitting ? "Verificando..." : "Entrar"}
           </button>
         </form>
+
         {import.meta.env.DEV && (
-          <p className="text-xs text-gray-500">
-            Tip dev: podés usar <code>?k=tuClave</code> en la URL solo en desarrollo.
+          <p className="admin-hint">
+            Tip dev: podés usar <code>?k=tuClave</code> en la URL solo en
+            desarrollo.
           </p>
         )}
       </div>

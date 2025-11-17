@@ -1,14 +1,45 @@
-:root{
-  --color-bg: #F9E3D3;            /* salmón claro pastel */
-  --color-text: #5C4033;          /* marrón chocolate suave */
-  --color-accent: #D4AF37;        /* dorado art-deco */
-  --color-button-1: #E8B99B;      /* salmón suave */
-  --color-button-2: #C48A6A;      /* salmón tostado */
-  --color-card: #FFF8F2;          /* blanco cálido rosado */
+/* Paleta base Obrador 180 graus */
+:root {
+  /* Colores de fondo */
+  --color-bg-page: #fff9f4;      /* crema cálido general */
+  --color-bg-surface: #ffffff;   /* tarjetas, bloques */
+  --color-bg-soft: #f7ede3;      /* secciones suaves si hace falta */
 
-  --radius-xl: 16px;
-  --radius-lg: 12px;
-  --shadow-soft: 0 6px 18px rgba(0,0,0,.06);
+  /* Paleta marca */
+  --color-salmon: #f7cab4;       /* acento pastel */
+  --color-brown: #6b4b3e;        /* marrón chocolate */
+  --color-gold: #d8b485;         /* dorado suave */
+  --color-cta: #c21e4a;          /* botón principal (ciruela/fucsia) */
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  /* Texto */
+  --color-text-main: #3a2e28;    /* texto principal, cálido */
+  --color-text-muted: #8b7f73;   /* texto secundario */
+  --color-text-on-cta: #ffffff;  /* texto sobre botones */
+
+  /* Bordes y sombras */
+  --color-border-soft: #e8e3dc;
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.08);
+  --shadow-subtle: 0 8px 20px rgba(0, 0, 0, 0.06);
+
+  /* Tipografías (Webfonts definidas en index.html) */
+  --font-serif: "Playfair Display", "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Escala de tamaños */
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+  --font-size-h1: clamp(2.3rem, 4vw, 3.4rem);
+  --font-size-h2: clamp(1.9rem, 3vw, 2.6rem);
+  --font-size-h3: clamp(1.4rem, 2.3vw, 1.8rem);
+
+  /* Radios y espaciado */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-xxl: 3rem;
 }
