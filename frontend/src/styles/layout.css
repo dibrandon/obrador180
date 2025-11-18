@@ -1,48 +1,537 @@
-/* styles/layout.css */
+/* ========== SHELL PÚBLICA ========== */
 
-/* Layout genérico para páginas públicas */
+.o-shell {
+  min-height: 100vh;
+  background: var(--color-bg-page, #fff9f4);
+  color: var(--color-text-main);
+  display: flex;
+  flex-direction: column;
+}
 
-.o-container {
-  max-width: 1120px;
+.o-main {
+  flex: 1;
+}
+
+/* ========== HEADER PÚBLICO (BARRA SUPERIOR) ========== */
+
+.o-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+}
+/* reservamos parte del .o-header */
+/*
+  border-bottom: 1px solid var(--color-border-soft);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  
+  */
+.o-header__inner {
+  max-width: var(--container-width, 1120px);
   margin: 0 auto;
-  padding-inline: 1.5rem;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: center;
 }
 
-/* Secciones verticales */
+/* Pastilla central con marca + nav (modo Vogue) */
+.o-header__pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
 
-.o-section {
-  padding-block: var(--space-xxl);
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  background: #ffffff;
+
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
 }
 
-.o-section--tight {
-  padding-block: var(--space-lg);
+/* Marca “OBRADOR 180º graus” */
+.o-header__brand {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--color-text-main);
 }
 
-/* Ajustes responsive de sección */
+.o-header__brand-top {
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+}
 
-@media (max-width: 768px) {
-  .o-section {
-    padding-block: var(--space-xl);
+.o-header__brand-bottom {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Nav principal (HeaderNav) */
+.o-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+.o-header__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  color: var(--color-text-muted);
+  text-decoration: none;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+.o-header__link:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.04);
+  color: var(--color-text-main);
+}
+
+.o-header__link--active {
+  background: #f4e6d8;
+  color: var(--color-text-main);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* Header responsive en mobile */
+@media (max-width: 640px) {
+  .o-header__inner {
+    padding-inline: 0.5rem;
+  }
+
+  .o-header__pill {
+    gap: 0.9rem;
+    padding-inline: 1rem;
+  }
+
+  .o-header__brand-top {
+    font-size: 0.65rem;
+  }
+
+  .o-header__brand-bottom {
+    font-size: 0.9rem;
+  }
+
+  .o-header__nav {
+    gap: 0.3rem;
+    margin-left: 0.75rem;
+  }
+
+  .o-header__link {
+    padding-inline: 0.65rem;
+    font-size: 0.85rem;
   }
 }
 
-/* Utility para centrar contenido en columna */
+/* ========== SECCIONES GENÉRICAS ========== */
 
-.o-stack {
+.o-section {
+  max-width: var(--container-width, 1120px);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  /* Para que los anchors (#top, #carta, #nosotros) no queden tapados por el header */
+  scroll-margin-top: 90px;
+}
+
+.o-section--hero {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.o-section--muted {
+  background: var(--color-bg-soft, #f7ede3);
+}
+
+.o-section__title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.o-section__subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  max-width: 32rem;
+}
+
+/* ========== HERO PRINCIPAL PÚBLICO ========== */
+
+.hero {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 1.75rem;
+  padding: 2.25rem 0 1.75rem;
 }
 
-/* Utility para alinear en fila con gap */
+.hero__content {
+  max-width: 540px;
+}
 
-.o-row {
+.hero__title {
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.hero__highlight {
+  display: inline-block;
+  color: var(--color-salmon, #f7cab4);
+}
+
+.hero__text {
+  font-size: 0.98rem;
+  line-height: 1.5;
+  max-width: 34rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.9;
+}
+
+.hero__meta {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-bottom: 1.1rem;
+}
+
+.hero__actions {
   display: flex;
-  gap: var(--space-lg);
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: flex-start;
 }
 
-/* Limitador de ancho de texto (para párrafos largos) */
+.hero__tagline {
+  font-size: 0.82rem;
+  opacity: 0.8;
+  max-width: 280px;
+}
 
-.o-text-narrow {
-  max-width: 40rem;
+/* Bloque visual (lado derecho en desktop) */
+.hero__visual {
+  margin-top: 0.5rem;
+  border-radius: 24px;
+  min-height: 180px;
+  background:
+    radial-gradient(circle at 10% 0%, #ffe9d7 0%, #fbd9c5 40%, transparent 70%),
+    radial-gradient(circle at 80% 80%, #f7c9b0 0%, #f2b397 40%, transparent 75%),
+    #f7e5d6;
+  box-shadow: var(--shadow-soft, 0 14px 40px rgba(0, 0, 0, 0.12));
+}
+
+/* MOBILE FIRST para el hero */
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 1.8rem;
+  }
+
+  .hero__title {
+    font-size: 1.7rem;
+  }
+
+  .hero__actions .c-btn {
+    width: 100%;
+    max-width: 260px;
+    justify-content: center;
+  }
+
+  .hero__visual {
+    min-height: 150px;
+  }
+}
+
+/* DESKTOP: hero en dos columnas */
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+    padding: 3rem 0 2.5rem;
+  }
+
+  .hero__visual {
+    flex: 0 0 40%;
+    min-height: 240px;
+  }
+}
+
+/* ========== BOTONES GENERALES (CTA) ========== */
+
+.c-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid transparent;
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Variante principal – hero CTA */
+.c-btn--primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-button-1, #f7cab4),
+    var(--color-button-2, #f0986c)
+  );
+  color: var(--color-text-on-cta, #ffffff);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.16);
+}
+
+.c-btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.04);
+}
+
+.c-btn--primary:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+.c-btn:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.12);
+  outline-offset: 2px;
+}
+
+/* ========== FOOTER ========== */
+
+.o-footer {
+  border-top: 1px solid var(--color-border-soft);
+  background: #ffffff;
+}
+
+.o-footer__inner {
+  max-width: var(--container-width, 1120px);
+  margin: 0 auto;
+  padding: 1rem;
+  font-size: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+/* ========== CATÁLOGO (GRID + CARDS + DENSIDADES) ========== */
+
+/* Grid base, mobile-first */
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+  padding: 16px 0 40px;
+}
+
+/* Card base */
+.card {
+  background: var(--color-bg-surface, #ffffff);
+  border-radius: var(--radius-card, 16px);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* Imagen dentro de la card */
+.card__media {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #f3e7de;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card__body {
+  padding: 14px 16px 8px;
+}
+
+.card__title {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.card__desc {
+  font-size: 0.92rem;
+  opacity: 0.85;
+  margin-bottom: 8px;
+  min-height: 2.5em;
+}
+
+.card__price {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* Botón WhatsApp / CTA dentro de la card */
+.button {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 0 16px 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 1rem;
+  background: linear-gradient(
+    180deg,
+    var(--color-button-1, #f7cab4),
+    var(--color-button-2, #f0986c)
+  );
+  color: #2b1e18;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+  text-align: center;
+  transition: transform 0.08s ease-in-out, filter 0.08s ease-in-out;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.button:focus {
+  outline: none;
+}
+
+/* Texto “muted” en catálogo */
+.muted {
+  opacity: 0.75;
+  margin: 10px 0 18px;
+}
+
+/* ========== DENSIDADES ========== */
+
+/* Compacta: más catálogo */
+:root[data-density="compact"] .grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+:root[data-density="compact"] .card__media {
+  aspect-ratio: 1 / 1;
+}
+
+:root[data-density="compact"] .card__body {
+  padding: 10px 12px;
+}
+
+:root[data-density="compact"] .card__title {
+  font-size: 0.98rem;
+}
+
+:root[data-density="compact"] .card__desc {
+  display: none;
+}
+
+:root[data-density="compact"] .button {
+  margin: 0 12px 12px;
+  padding: 10px 12px;
+}
+
+/* Cómoda: lectura estándar */
+:root[data-density="cozy"] .grid {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+  :root[data-density="cozy"] .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+:root[data-density="cozy"] .card__media {
+  aspect-ratio: 4 / 3;
+}
+
+:root[data-density="cozy"] .card__title {
+  font-size: 1.02rem;
+}
+
+:root[data-density="cozy"] .card__body {
+  padding: 12px 14px 10px;
+}
+
+/* Amplia: foco en foto/texto */
+:root[data-density="roomy"] .grid {
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 768px) {
+  :root[data-density="roomy"] .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+:root[data-density="roomy"] .card__media {
+  aspect-ratio: 16 / 9;
+}
+
+:root[data-density="roomy"] .card__title {
+  font-size: 1.12rem;
+}
+
+:root[data-density="roomy"] .card__body {
+  padding: 16px 18px 12px;
+}
+
+/* Escalados extra para compacta en pantallas grandes */
+@media (min-width: 480px) {
+  :root[data-density="compact"] .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  :root[data-density="compact"] .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  :root[data-density="cozy"] .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

@@ -12,7 +12,6 @@ export default function ProductCard({ product }){
         {image ? <img src={image} alt={name} /> : null}
       </div>
       <div className="card__body">
-        <div className="ribbon">Obrador 180°</div>
         <h3 className="card__title">{name}</h3>
         <p className="card__desc">{description || '—'}</p>
         <div className="card__price">{fmt.format(Number(price || 0))}</div>
@@ -20,6 +19,6 @@ export default function ProductCard({ product }){
       <a className="button" href={waLink} target="_blank" rel="noreferrer">
         Encargar por WhatsApp
       </a>
-    </article>
+     </article>
   );
 }

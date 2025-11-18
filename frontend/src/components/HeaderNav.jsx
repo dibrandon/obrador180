@@ -1,29 +1,22 @@
-import { useEffect, useState } from 'react';
-import ViewToggle from './ViewToggle';
-
-function HeaderNav() {
-  const waNumber = import.meta.env.VITE_WA_NUMBER;
-  const msg = encodeURIComponent("Hola 👋 Me gustaría hacer un pedido.");
-  const waLink = `https://wa.me/${waNumber}?text=${msg}`;
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
+export default function HeaderNav() {
   return (
-    <header className={`header sticky ${scrolled ? 'header--scrolled' : ''}`} id="inicio">
-      <div className="brand">Obrador 180°</div>
-      <nav className="nav">
-        <a href="#inicio">Inicio</a>
-        <a href="#carta">Carta</a>
-        <a href={waLink} target="_blank" rel="noreferrer">Encargar</a>
+    <div className="o-header__pill">
+      <a href="#top" className="o-header__brand">
+        <span className="o-header__brand-top">OBRADOR</span>
+        <span className="o-header__brand-bottom">180º graus</span>
+      </a>
+
+      <nav className="o-header__nav" aria-label="Navegación principal">
+        <a href="#top" className="o-header__link">
+          Inicio
+        </a>
+        <a href="#carta" className="o-header__link o-header__link--active">
+          Carta
+        </a>
+        <a href="#nosotros" className="o-header__link">
+          Nosotros
+        </a>
       </nav>
-      <span className="badge">MVP v0.8.1</span>
-      <ViewToggle showLabelsOnDesktop={false} />
-    </header>
+    </div>
   );
 }
-export default HeaderNav;
