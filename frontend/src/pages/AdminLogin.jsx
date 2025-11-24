@@ -32,9 +32,7 @@ export default function AdminLogin() {
       if (isAuthedLocally()) {
         const result = await verifyAdminKey();
         if (result.ok) {
-          window.location.replace(
-            resolveNextDestination("/admin/dashboard")
-          );
+          window.location.replace(resolveNextDestination("/admin/dashboard"));
           return;
         }
         if (!cancelled && result.reason === "network") {

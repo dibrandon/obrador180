@@ -1,4 +1,4 @@
-/* 🎨 Design tokens – Obrador 180 graus (Vogue pastel) */
+/* Design tokens — Obrador 180 graus (Vogue pastel) */
 
 :root {
   /* ===== FONDOS GENERALES ===== */
@@ -25,7 +25,7 @@
   --color-accent-soft: #f6d3b3;
   --color-accent-strong: #c46b3b;
 
-  /* CTA estilo “ciruela/fucsia pastel” si lo necesitamos */
+  /* CTA estilo ciruela/fucsia pastel si lo necesitamos */
   --color-cta: #c21e4a;
   --color-cta-soft: #fbe1eb;
   --color-cta-strong: #9a173d;

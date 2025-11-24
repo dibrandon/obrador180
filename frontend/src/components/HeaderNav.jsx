@@ -16,6 +16,9 @@ export default function HeaderNav() {
         <a href="#nosotros" className="o-header__link">
           Nosotros
         </a>
+        <a href="#contacto" className="o-header__link">
+          Encargos
+        </a>
       </nav>
     </div>
   );

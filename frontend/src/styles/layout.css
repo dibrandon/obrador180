@@ -19,13 +19,12 @@
   top: 0;
   z-index: 80;
 }
-/* reservamos parte del .o-header */
+/* Reservamos parte del .o-header */
 /*
   border-bottom: 1px solid var(--color-border-soft);
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
-  
-  */
+*/
 .o-header__inner {
   max-width: var(--container-width, 1120px);
   margin: 0 auto;
@@ -150,8 +149,8 @@
   max-width: var(--container-width, 1120px);
   margin: 0 auto;
   padding: 2rem 1rem;
-  /* Para que los anchors (#top, #carta, #nosotros) no queden tapados por el header */
-  scroll-margin-top: 90px;
+  /* Anchors (#top, #carta, #nosotros, #contacto) no quedan tapados por el header */
+  scroll-margin-top: 110px;
 }
 
 .o-section--hero {
@@ -290,31 +289,32 @@
   letter-spacing: 0.03em;
   cursor: pointer;
   text-decoration: none;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
-
-/* Variante principal – hero CTA */
-.c-btn--primary {
+  color: var(--color-text-on-cta, #ffffff);
   background: linear-gradient(
     135deg,
     var(--color-button-1, #f7cab4),
     var(--color-button-2, #f0986c)
   );
-  color: var(--color-text-on-cta, #ffffff);
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.16);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    filter 0.2s ease;
 }
 
-.c-btn--primary:hover {
+.c-btn--primary {
+  color: var(--color-text-on-cta, #ffffff);
+}
+
+.c-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
   filter: brightness(1.04);
 }
 
-.c-btn--primary:active {
+.c-btn:active {
   transform: translateY(0);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
 }
@@ -436,6 +436,12 @@
 
 .button:focus {
   outline: none;
+}
+
+.button[aria-disabled="true"] {
+  opacity: 0.65;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* Texto “muted” en catálogo */

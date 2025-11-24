@@ -30,7 +30,7 @@ function App() {
               </p>
 
               <p className="hero__meta">
-                <strong>Encargos por WhatsApp</strong> · recogida en obrador ·
+                <strong>Encargos por WhatsApp</strong> — recogida en obrador —
                 opciones para celebraciones y eventos.
               </p>
 
@@ -59,6 +59,43 @@ function App() {
           </header>
 
           <ProductGrid />
+        </section>
+
+        {/* NOSOTROS */}
+        <section id="nosotros" className="o-section o-section--muted">
+          <header style={{ marginBottom: "1rem" }}>
+            <h2 className="o-section__title">Nosotros</h2>
+            <p className="o-section__subtitle">
+              Obrador pequeño, corazón grande: hornos encendidos a diario,
+              recetas probadas y un equipo que ama lo que hace.
+            </p>
+          </header>
+          <p className="hero__text">
+            Trabajamos con proveedores locales y seleccionamos ingredientes
+            honestos para que cada torta y pastel llegue con sabor, textura y
+            presencia de revista. Preparados para celebraciones, regalos o
+            endulzar cualquier día.
+          </p>
+        </section>
+
+        {/* CONTACTO / ENCARGOS */}
+        <section id="contacto" className="o-section">
+          <header style={{ marginBottom: "1rem" }}>
+            <h2 className="o-section__title">Encargos y contacto</h2>
+            <p className="o-section__subtitle">
+              Cuéntanos qué necesitas y coordinamos por WhatsApp. También puedes
+              pasar por el obrador para cerrar detalles.
+            </p>
+          </header>
+          <div className="hero__actions">
+            <a href="#carta" className="c-btn c-btn--primary">
+              Ver carta y encargar
+            </a>
+            <span className="hero__tagline">
+              Elige un básico y lo personalizamos: tamaños, decoraciones y
+              sabores de temporada.
+            </span>
+          </div>
         </section>
       </main>
 
