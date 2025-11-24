@@ -122,7 +122,7 @@ frontend/
 * [x] Precio formateado (EUR)
 * [x] CTA WhatsApp
 * [x] Copys finales (hero, carta, nosotros, encargos)
-* [ ] Toggle de densidades (Compact / Cozy / Roomy)
+* [x] Toggle de densidades (Compact / Cozy / Roomy)
 * [ ] Pulido visual final (sombras, spacing)
 * [ ] QA móvil profundo (iOS + Android)
 
