@@ -49,6 +49,27 @@
     0 12px 32px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.9);
 }
+@media (max-width: 480px) {
+  .o-header__pill {
+    max-width: 100%;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .o-header__nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .o-header__nav a {
+    padding: 0.2rem 0.1rem;
+  }
+}
 
 /* Marca “OBRADOR 180º graus” */
 .o-header__brand {
@@ -140,6 +161,39 @@
   .o-header__link {
     padding-inline: 0.65rem;
     font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .o-header {
+    padding: 0.6rem 0.9rem;
+  }
+
+  .o-header__inner {
+    max-width: 100%;
+  }
+
+  .o-header__pill {
+    max-width: 100%;
+    padding: 0.55rem 0.7rem;
+    margin: 0 auto;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .o-header__brand {
+    margin-right: 0.5rem;
+  }
+
+  .o-header__nav {
+    margin-left: 0.3rem;
+    gap: 0.2rem;
+  }
+
+  .o-header__link {
+    padding: 0.28rem 0.6rem;
+    font-size: 0.82rem;
   }
 }
 
