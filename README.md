@@ -1,181 +1,245 @@
-# Obrador 180 graus – MVP Web  
-**Versión actual:** `v0.8.1 – Dashboard auto-sync (Render + Vercel + Cloudinary)`  
+# 🍰 **Obrador 180 graus – MVP Web**
 
-Proyecto MVP desarrollado con stack **MERN (MongoDB, Express, React, Node.js)**.  
-Objetivo: **reposicionar Obrador 180 graus como pastelería artesanal** y recuperar su clientela fiel mediante una presencia digital clara, estética y funcional.
+**Versión actual:** `v0.9 — Home + Carta + Nosotros + Dashboard auto-sync`
+**Deploy:** Vercel (frontend) · Render (backend) · Cloudinary (imágenes)
 
----
-
-## 🧭 Objetivos generales
-
-- Mostrar catálogo de productos reales con fotos, precios y descripciones.  
-- Permitir encargos directos vía **WhatsApp Business**.  
-- Facilitar la gestión del catálogo desde un **panel administrativo sencillo** (sin conocimientos técnicos).  
-- Simplificar mantenimiento y minimizar costes de hosting.  
-- Desplegar una versión pública funcional en menos de 4 semanas.
+Proyecto desarrollado con stack **MERN (MongoDB, Express, React, Node.js)**
+para **reposicionar Obrador 180 graus como pastelería artesanal moderna**
+y recuperar su clientela mediante una experiencia digital clara, estética y ágil.
 
 ---
 
-## 🗂️ Estructura del proyecto
+# 🧭 **Objetivos del proyecto**
 
-```bash
+* Mostrar la **carta real** del obrador con fotos, precios y descripciones coherentes.
+* Permitir **encargos directos por WhatsApp Business** sin fricción.
+* Brindar un **panel administrativo simple**, usable por personal no técnico.
+* Mantener **costes mínimos** usando Render + Vercel free tiers.
+* Entregar un **MVP funcional en < 4 semanas**, ampliable sin romper arquitectura.
+
+---
+
+# 🗂️ **Estructura general del proyecto**
+
+```
 obrador180/
-├── frontend/   # React + Vite (UI pública y panel admin)
-├── backend/    # Node + Express (API + conexión Mongo)
-├── docs/       # Documentación, bitácoras y resúmenes de desarrollo
-├── design/     # Wireframes, paleta y referencias visuales
+├── frontend/        # React + Vite – web pública + admin
+│   ├── src/
+│   │   ├── components/   # ProductCard, Grid, HeaderNav, ViewToggle...
+│   │   ├── pages/        # Admin, Dashboard, Login, NotFound
+│   │   ├── routes/       # AdminGuard + rutas privadas
+│   │   ├── lib/          # apiFetch, uploadImage, events (auto-sync)
+│   │   └── styles/       # reset, tokens, base, layout, admin.css
+│   └── public/
+│
+├── backend/         # Node + Express 5 – API + adminAuth + métricas
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── scripts/
+│   └── index.js
+│
+├── docs/            # Resúmenes diarios, backlogs, diseño, ADR
+├── design/          # Paleta Odilio Vogue, wireframes y referencias
 └── README.md
-````
+```
 
 ---
 
-## 🧰 Stack técnico
+# 🧰 **Stack técnico**
 
-**Frontend:** React + Vite
-**Backend:** Node.js + Express
-**Base de datos:** MongoDB Atlas
+### **Frontend**
 
-**Hosting:**
+* React + Vite
+* CSS artesanal usando **tokens**, layout y tipografías cargadas a mano
+* Mobile-first
+* Sin frameworks UI (evita bloat)
 
-* Frontend → Vercel *(free tier)*
-* Backend → Render *(free tier)*
+### **Backend**
 
-**Imágenes:** Cloudinary *(unsigned preset → `obrador_products`)*
-**Mensajería:** WhatsApp Business (`wa.me`)
+* Node.js (Express 5)
+* Mongoose + MongoDB Atlas
+* CORS robusto + adminAuth + noStore
+
+### **Infraestructura**
+
+* **Frontend:** Vercel
+* **Backend:** Render
+* **Imágenes:** Cloudinary (unsigned preset → carpeta `obrador/products`)
+* **Mensajería:** WhatsApp Business (`wa.me/…`)
 
 ---
 
-## 🧩 Estado actual – Versión v0.8.1
+# 🧩 **Estado actual del MVP (v0.9-pre)**
 
-El proyecto alcanza la **fase v0.8.1**, con mejoras significativas en UX del panel administrativo, nuevo Dashboard reactivo y sistema de sincronización en vivo.
+El sistema ya es **estable, funcional y listo para demo cliente**.
+Se completó tanto el catálogo público como el backoffice con métricas.
 
-### ✅ Logros del Bloque 5 (Día 8)
+---
 
-#### 🔐 Autenticación refinada
+## 🟢 **Frontend público (Home / Carta / Nosotros)**
 
-* Login admin basado en **clave persistente**.
-* `AdminGuard` unifica verificación local + `/admin/ping`.
-* Manejo diferenciado de errores: `unauthorized`, `network`, `offline`.
+### **Home**
 
-#### 📊 Dashboard administrativo (nuevo)
+* Hero limpio con copy artesanal.
+* CTA “Ver carta” que scrollea suave al catálogo.
+* Estilo pastel “Odilio Vogue style”.
 
-* Nueva ruta protegida: `/admin/dashboard`.
+### **Carta**
+
+* Conectada en vivo al backend.
+* Cards estables con nombre, foto, descripción, precio, CTA WA.
+* Toggle de densidades (`compact / cozy / roomy`) listo para reactivar.
+
+### **Sección “Nosotros”**
+
+* Copy humano, corto y elegante.
+* CTA secundario a WhatsApp.
+* Compatible con futura imagen del obrador.
+
+### **Footer**
+
+* Versión + nombre del obrador.
+* Placeholder mínimo para legal.
+
+---
+
+## 🟢 **Backoffice (admin)**
+
+### 📊 **Dashboard nuevo**
+
+* Ruta protegida `/admin/dashboard`.
 * Estadísticas en vivo:
 
-  * Productos activos
+  * Total de productos
+  * Activos
   * Archivados
-  * Total
   * Última modificación
-* UI reactiva con estados: `loading`, `error`, `offline`, `ready`.
 
-#### 🔄 Sincronización automática catálogo ↔ dashboard
+### 🔄 **Auto-sync catálogo ↔ dashboard**
 
-* Nuevo módulo de eventos internos:
+* Sistema interno de eventos:
 
-  * `emitStatsChanged()`
-  * `subscribeStatsChanged()`
-* Cualquier acción en el catálogo (alta, edición, baja, restauración) refresca automáticamente el Dashboard.
-* UX mucho más fluida sin recargar la SPA.
+  * `emitStatsChanged`
+  * `subscribeStatsChanged`
+* Cualquier cambio se refleja al instante sin recargar la SPA.
 
-#### 🛠 Backend
+### 🔐 **Autenticación refinada**
 
-* Nuevo endpoint protegido:
-
-  ```
-  GET /admin/stats
-  ```
-
-  entregando `total`, `active`, `inactive`, `lastUpdate`.
-* Middleware `adminAuth` + `noStore` aplicados correctamente.
-* Consultas paralelas para mayor velocidad.
-
-#### 🌐 Producción estable
-
-* Conexión Vercel ↔ Render 100% operativa.
-* CORS afinado para AdminGuard y Dashboard.
-* Cache-control estricto para vistas privadas.
+* Login con clave (`ADMIN_KEY`).
+* AdminGuard robusto (maneja `offline`, `network`, `unauthorized`).
+* No-store en rutas críticas (evita cache en el panel).
 
 ---
 
-## 🚀 Scripts básicos
+## 🛠️ **Backend (v0.8.1 estable)**
+
+* Express 5 + rutas modulares.
+
+* `adminAuth.js` + restricciones CORS estrictas.
+
+* Endpoints protegidos `/admin/ping` y `/admin/stats`.
+
+* CRUD completo:
+
+  * GET activos
+  * GET archivados
+  * POST crear
+  * PUT editar
+  * DELETE archivo lógico
+  * RESTORE recuperar
+
+* Seed reproducible.
+
+* Cache-control completo.
+
+* Compatible 100% con AdminLogin y Dashboard.
+
+---
+
+# 🌐 **URLs de producción**
+
+| Área                 | URL                                                                        |
+| -------------------- | -------------------------------------------------------------------------- |
+| **Frontend público** | [https://obrador180.vercel.app](https://obrador180.vercel.app)             |
+| **Panel admin**      | [https://obrador180.vercel.app/admin](https://obrador180.vercel.app/admin) |
+| **Backend API**      | [https://obrador180.onrender.com](https://obrador180.onrender.com)         |
+
+> El panel admin requiere clave y solo se accede vía `/admin/login`.
+
+---
+
+# 🚀 **Scripts útiles**
 
 ### Frontend
 
-```bash
+```
 cd frontend
-npm run dev      # entorno local
-npm run build    # compilar versión producción
+npm run dev
+npm run build
+npm run preview
 ```
 
 ### Backend
 
-```bash
+```
 cd backend
-npm run dev      # servidor local en puerto 4000
-npm start        # ejecución en producción
+npm run dev
+npm start
 ```
 
 ---
 
-## 🌐 URLs de producción
+# 📅 **Roadmap de desarrollo**
 
-| Componente            | URL                                                                        |
-| --------------------- | -------------------------------------------------------------------------- |
-| 🧱 Backend (API)      | [https://obrador180.onrender.com](https://obrador180.onrender.com)         |
-| 🌍 Frontend (público) | [https://obrador180.vercel.app](https://obrador180.vercel.app)             |
-| 🔑 Backoffice (admin) | [https://obrador180.vercel.app/admin](https://obrador180.vercel.app/admin) |
-
-> El acceso al panel admin está protegido por clave (`ADMIN_KEY` en backend) y gestionado mediante `/admin/login`.
-
----
-
-## 📅 Plan de desarrollo
-
-| Bloque | Foco principal                          | Entregable / Estado                      |
-| ------ | --------------------------------------- | ---------------------------------------- |
-| 1️⃣    | Setup técnico + arquitectura MERN       | ✅ Repositorios locales operativos        |
-| 2️⃣    | Catálogo real + productos con imágenes  | ✅ Catálogo público navegable             |
-| 3️⃣    | Back-office (CRUD + conexión DB)        | ✅ CRUD administrativo conectado (v0.6)   |
-| 4️⃣    | Deploy fullstack (Render + Vercel + QA) | ✅ Demo online estable (v0.7)             |
-| 5️⃣    | Dashboard + métricas + Auth refinado    | ✅ Dashboard auto-sync operativo (v0.8.1) |
+| Versión      | Estado | Contenido                                            |
+| ------------ | ------ | ---------------------------------------------------- |
+| **v0.6**     | ✔️     | CRUD admin + DB                                      |
+| **v0.7**     | ✔️     | Deploy completo (Render + Vercel)                    |
+| **v0.8.1**   | ✔️     | Dashboard + Auto-sync + Auth estable                 |
+| **v0.9** | 🟡     | Home pública + Carta + Nosotros (Odilio Vogue Style) |
+| **v1.0**     | ⏳      | Demo final para cliente                              |
 
 ---
 
-## 👥 Roles
+# 📘 **Documentación de progreso**
+
+* `/docs/resumenDia3.md` – Inicio del frontend
+* `/docs/resumenDia4.md` – Integración catálogo/backend
+* `/docs/resumenDia5.md` – CRUD completo
+* `/docs/resumenDeploy6.md` – Deploy fullstack
+* `/docs/resumenDia8.md` – Dashboard + auto-sync
+* `/docs/resumenDia10-11.md` – Diseño público + Home
+
+*(Se actualiza a diario durante el sprint.)*
+
+---
+
+# 🧊 **Visión futura (post-MVP)**
+
+No forman parte del MVP, pero ya están pensados:
+
+* Página “Contacto / Ubicación”
+* Alineación estética del panel admin
+* Filtros avanzados para productos
+* Catálogo multilenguaje (ES/CAT)
+* Animaciones ligeras (fade, hover elegante)
+* Galería de pasteles para eventos
+* Modo oscuro opcional (no prioritario)
+
+---
+
+# 👥 **Equipo**
 
 * **Dev / PM:** Alejandro
-* **PO / QA:** Pyttu
-* **Cliente:** Obrador 180 graus (Vilanova i la Geltrú)
+* **QA / PO:** Pyttu
+* **Cliente:** Obrador 180 graus – Vilanova i la Geltrú
 
 ---
 
-## 📄 Documentación de progreso
+# 🔒 **Licencia**
 
-* `docs/resumenDia3.md` → Finalización Frontend (v0.5)
-* `docs/resumenDia4.md` → Integración Catálogo-Backend
-* `docs/resumenDia5.md` → Back-office CRUD completo (v0.6)
-* `docs/resumenDeploy6.md` → Deploy Render + Vercel (v0.7)
-* `docs/resumenDia8.md` → Dashboard + auto-sync (v0.8.1)
-
----
-
-## 🔖 Próxima versión
-
-**Objetivo v0.9 – “Mejoras UI + refinamiento admin”**
-
-* Ajustes visuales del panel.
-* Mejorar UX de edición/baja.
-* Añadir confirmaciones y loaders visibles.
-* Botones coherentes con identidad visual del obrador.
-* Optimizar imágenes en catálogo público.
-
----
-
-## 🧾 Licencia
-
-Proyecto interno sin licencia pública.
-© 2025 – Alejandro.
-
-```
+Proyecto interno / propietario.
+© 2025 — Alejandro.
 
 ---

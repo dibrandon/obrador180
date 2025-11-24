@@ -1,50 +1,53 @@
 # 📋 Backlog General – Proyecto Obrador 180 graus MVP
 
-**Versión actual:** `v0.8.1 – Dashboard & Admin Auto-Sync`  
-**Última actualización:** **13 de noviembre de 2025**  
-**Avance estimado:** ~85 %
+**Versión actual:** `v0.9 – Frontend limpio + Admin estable`
+**Última actualización:** **25 de noviembre de 2025**
+**Avance estimado:** ~92 %
 
-> Documento maestro del proyecto. Resume la visión, los objetivos, las áreas de trabajo y los entregables esperados del MVP.  
-> Los detalles técnicos y tareas específicas están en los backlogs dedicados de **backend** y **frontend**.
-
----
-
-## 🧭 Visión General
-
-**Objetivo:**  
-Reforzar la identidad artesanal del obrador mediante una plataforma web moderna, simple y visualmente coherente, que permita mostrar el catálogo real de productos y recibir encargos por WhatsApp.
-
-**Enfoque:**
-
-- Arquitectura **MERN**
-- UI artesanal, mobile-first, sin frameworks externos
-- MVP funcional en 4 semanas
-- Entregable: versión pública navegable y autogestionable
+> Documento maestro del proyecto. Resume la visión global, las metas y el estado real del MVP.
+> Los detalles técnicos están desglosados en los backlogs específicos de **backend** y **frontend**.
 
 ---
 
-## 🎯 Objetivos del MVP
+# 🧭 Visión General
 
-| Categoría     | Meta principal                                |
+**Objetivo:**
+Consolidar la identidad artesanal del obrador mediante una web clara, elegante y funcional que permita:
+
+* mostrar catálogo real de productos
+* recibir encargos por WhatsApp
+* gestionar la carta desde un panel admin simple y seguro
+
+**Enfoque del MVP:**
+
+* Stack **MERN**
+* UI propia, mobile-first, estética *Odilio Vogue Style*
+* 4–5 semanas de desarrollo
+* Entregable: sitio público + panel admin 100% operativo
+
+---
+
+# 🎯 Objetivos del MVP
+
+| Área          | Meta principal                                |
 | ------------- | --------------------------------------------- |
-| Comunicación  | Reposicionar la marca como obrador artesanal  |
+| Comunicación  | Reposicionar marca como obrador artesanal     |
 | Funcionalidad | Catálogo real + contacto directo por WhatsApp |
-| Tecnología    | MERN custom, sin plantillas                   |
-| Mantenimiento | Backend simple, seguro y fácil de operar      |
-| Escalabilidad | Base lista para pedidos online v2             |
+| Tecnología    | MERN custom → sin plantillas                  |
+| Operatividad  | Admin simple, seguro y estable                |
+| Escalabilidad | Base lista para v2 (pedidos online)           |
 
 ---
 
-## ⚙️ Estructura General del Proyecto
+# ⚙️ Estructura del Proyecto
 
 ```bash
 obrador180/
 ├── frontend/   # UI pública + panel admin
 ├── backend/    # API + lógica + conexión DB
-├── docs/       # Documentación y resúmenes
-├── design/     # Paleta, tipografías, referencias
-└── README.md
-````
+├── docs/       # Backlogs, resúmenes diarios, manual cliente
+└── design/     # Paleta, referencias, tipografías
+```
 
 ---
 
@@ -54,78 +57,81 @@ obrador180/
 
 ## 1️⃣ **Arquitectura y Setup**
 
-* [x] Repositorio inicial y estructura MERN
-* [x] Variables de entorno (.env frontend + backend)
-* [x] Conexión completa local
-* [x] Cloudinary configurado (`obrador_products`, unsigned)
+* [x] Repositorio MERN
+* [x] .env frontend + backend
+* [x] Cloudinary unsigned + carpeta `obrador_products`
 * [x] CORS con whitelist dinámica
-* [x] Solución al bug Express 5 (`app.options("/:path*")`)
-* [x] No-store global para rutas admin
-* [x] **Infra de Auth refinada (AdminGuard + verify + offline mode)**
+* [x] Fix Express 5 para OPTIONS
+* [x] Middleware `noStore` para admin
+* [x] Infra de Auth sólida (AdminGuard, verify, offline mode)
+
+**Estado:** ✔️ Completo
 
 ---
 
 ## 2️⃣ **Backend API & Lógica**
 
-> Detalle en `BACKLOG_BACKEND.md`
+> Ver `BACKLOG_BACKEND.md` para desglose detallado.
 
 ### Completado
 
-* [x] Endpoints básicos `/health`, `/products`
-* [x] Modelo `Product` (name, price, desc, image, isActive)
-* [x] CRUD completo con **soft delete**
-* [x] Rutas admin (`/admin/ping`)
-* [x] Middleware `adminAuth` con Basic Auth
-* [x] Middleware `noStore` para evitar caches en admin
-* [x] Rate-limits por ruta
-* [x] CORS fix para permitir `Cache-Control` y `Pragma`
-* [x] Corrección de preflight OPTIONS fallido
-* [x] Backend estable con Auth funcional
-* [x] **Nuevo endpoint `/admin/stats` con conteos paralelos + lastUpdate**
-* [x] **Endpoint protegido y anti-cache probado en local y producción**
+* [x] Modelo `Product`
+* [x] Endpoints `/products` con CRUD + soft delete
+* [x] Rutas admin `/admin/ping`, `/admin/stats`
+* [x] Middleware `adminAuth`
+* [x] Cache-Control + Pragma en allowedHeaders
+* [x] Fix options preflight
+* [x] Dashboard stats en producción
+* [x] API estable con Auth + anti-cache + sync
 
 ### Pendiente
 
 * [ ] Endpoint `/orders` (no MVP)
-* [ ] Documentación API en Markdown
-* [ ] Logging refinado para producción
+* [ ] Documentación API Markdown
+* [ ] Logging producción
 * [ ] Dominio final + SSL
 
 ---
 
 ## 3️⃣ **Frontend UI & Experiencia**
 
-> Detalle en `BACKLOG_FRONTEND.md`
+> Detalle en `BACKLOG_FRONTEND.md`.
 
 ### Completado
 
-* [x] Catálogo conectado al backend
-* [x] Subida de imágenes (Cloudinary unsigned)
-* [x] AdminForm: alta/edición con preview
-* [x] AdminList: edición, baja lógica y restauración
-* [x] Login admin completo
-* [x] AdminGuard con:
+**Admin:**
 
-  * verificación de clave
-  * modo offline
-  * no-store en requests
-  * manejo diferenciado de errores
-* [x] Manejo de “Servidor no disponible”
-* [x] Preflight estable gracias a allowedHeaders extendido
-* [x] Primera versión UI admin usable
-* [x] **Dashboard administrativo con estadísticas reales**
-* [x] **Sistema de eventos internos (auto-sync catálogo ↔ dashboard)**
-* [x] Navegación SPA completa entre Dashboard y Panel
-* [x] Rutas admin refinadas y consistentes con Auth
+* [x] Login completo (clave única)
+* [x] AdminGuard con verify + offline mode
+* [x] CRUD productos (alta/editar/baja lógica/restaurar)
+* [x] Subida imágenes vía Cloudinary
+* [x] Dashboard con KPIs reales
+* [x] Auto-sync catálogo ↔ dashboard
+* [x] Mensajes y estados saneados UTF-8
+* [x] Copys administrativos actualizados
+* [x] Navegación SPA estable
+* [x] Admin 100% usable
 
-### Pendiente (v0.9)
+**Frontend público:**
 
-* [ ] Mejoras visuales en el panel admin
-* [ ] Estado de carga visible en acciones CRUD
-* [ ] Home público inicial (presentación + CTA WhatsApp)
-* [ ] Ajuste tipográfico y colores finales
-* [ ] Contacto + ubicación
-* [ ] Primer refinamiento responsive
+* [x] Hero con copys finales
+* [x] Sección Carta → conectada al backend
+* [x] Sección Nosotros → texto editorial final
+* [x] Sección Encargos → CTA WhatsApp
+* [x] Componentes ProductCard y ProductGrid robustos (price seguro + WA seguro)
+* [x] Carga estándar “Cargando productos...”
+* [x] 404 con copy editorial
+* [x] Encoding UTF-8 corregido en todo el frontend
+
+### Pendiente (v0.9 → v1.0)
+
+* [ ] Toggle de densidades (Compact / Cozy / Roomy) en cabecera de carta
+* [ ] Refinamiento de imágenes (tamaños + placeholders)
+* [ ] QA móvil completo (iOS + Android)
+* [ ] Footer final + copy legal simple
+* [ ] Ajustes finos de spacing (Vogue style)
+* [ ] Microanimaciones suaves en CTA
+* [ ] Página “Contacto / Ubicación” (si el cliente lo requiere)
 
 ---
 
@@ -133,22 +139,18 @@ obrador180/
 
 ### Completado
 
-* [x] MongoDB Atlas (Free Tier)
-* [x] Cloudinary funcionando producción/local
-* [x] Preflight corregido
-* [x] CORS estable en todos los flujos
-* [x] Autenticación pasando por backend estable (no caching)
 * [x] Render backend
 * [x] Vercel frontend
-* [x] Conexión entre entornos
-* [x] Dashboard funcionando en producción con stats reales
-* [x] Fix al allowedOrigins que rompía `/admin/ping` en Vercel
+* [x] Conexión backend ↔ frontend estable
+* [x] Cloudinary producción/local
+* [x] Dashboard funcionando en producción
+* [x] Fix allowedOrigins para `/admin/ping`
 
 ### Pendiente
 
-* [ ] Dominio final + CNAME
-* [ ] Optimización de rendimiento
-* [ ] Logs de acceso admin (opcional)
+* [ ] Dominio final + DNS + CNAME
+* [ ] Optimización de build
+* [ ] Logs admin opcionales
 
 ---
 
@@ -156,68 +158,57 @@ obrador180/
 
 ### Completado
 
-* [x] README general actualizado a v0.8.1
-* [x] Backlogs frontend y backend
-* [x] Resúmenes día 1–8
-* [x] QA completo Día 8: Auth, Stats, Dashboard, Sync, Navegación SPA
-* [x] Registro de bugs resueltos (CORS, OPTIONS, AdminGuard, no-store)
+* [x] README v0.9 actualizado
+* [x] Backlog backend
+* [x] Backlog frontend
+* [x] Resúmenes Dia 1–11
+* [x] Registro de fixes críticos (Auth, CORS, UTF-8)
 
 ### Pendiente
 
-* [ ] Manual para el cliente
-* [ ] QA móvil + escritorio
-* [ ] Preparación presentación MVP
+* [ ] Manual cliente (uso admin + cómo crear productos)
+* [ ] QA móvil completo
+* [ ] Preparar demo pública
 
 ---
 
 # 🚀 Hitos del Proyecto
 
-| Fase     | Objetivo                          | Estado                      |
-| -------- | --------------------------------- | --------------------------- |
-| Semana 1 | Setup técnico + seed de productos | ✔️                          |
-| Semana 2 | Catálogo visible + WhatsApp       | ✔️                          |
-| Semana 3 | Back-office con CRUD completo     | ✔️ (`v0.6`)                 |
-| Semana 4 | Dashboard + Auth refinado         | ✔️ (`v0.8.1`)               |
-| Semana 5 | UI final + Home + cierre MVP      | 🔄 en progreso (`v0.9-pre`) |
+| Fase     | Objetivo                          | Estado                 |
+| -------- | --------------------------------- | ---------------------- |
+| Semana 1 | Setup + primeros productos        | ✔️                     |
+| Semana 2 | Catálogo + WhatsApp               | ✔️                     |
+| Semana 3 | Backoffice CRUD                   | ✔️ (`v0.6`)            |
+| Semana 4 | Dashboard + Auth                  | ✔️ (`v0.8.1`)          |
+| Semana 5 | Home, copys, refinamiento general | 🔄 (`v0.9-pre → v0.9`) |
+| Semana 6 | QA final + presentación cliente   | ⏳ en curso             |
 
 ---
 
 # 🧱 Estado global del proyecto
 
-**Versión actual:** `v0.8.1 – Dashboard & Admin Auto-Sync`
-**Avance:** ~85 %
-**Última actualización:** **13 noviembre 2025**
+**Versión actual:** `v0.9 – Frontend & Admin consolidados`
+**Avance:** ~92 %
+**Última actualización:** 25 noviembre 2025
 
-🟢 Backend estable y autenticado
-🟢 Panel admin completo con Dashboard reactivo
-🟢 Sincronización automática catálogo ↔ dashboard
-🟠 Falta Home público + refinamiento estético
-🔵 MVP público previsto: semana del 18 noviembre 2025
+🟢 Backend estable
+🟢 Panel admin completo y coherente
+🟢 Frontend textual y funcional finalizado
+🟠 Falta toggle Cozy + QA móvil
+🔵 MVP para demo final listo esta semana
 
 ---
 
 # Post-MVP Frontend Optimization
 
 ```md
-- Revisar tamaño del bundle tras `npm run build`
-- Code-splitting para rutas admin (React.lazy + Suspense)
-- Thumbnails Cloudinary: `f_auto,q_auto,w_400,h_400,c_fill`
-- Lazy-loading de imágenes
+- Revisar bundle final tras build
+- Code-splitting dinámico en rutas admin
+- Thumbnails Cloudinary en productos (f_auto, q_auto, w_400, h_400, c_fill)
+- Lazy-loading imágenes
 - Evaluar Cache-Control público para GET /products
 ```
 
 ---
 
-```
-
----
-
-Si querés, ahora preparo también:
-
-- **BACKLOG_BACKEND.md actualizado a v0.8.1**  
-- **BACKLOG_FRONTEND.md actualizado a v0.8.1**  
-- **Diskette Día 9 (v0.9-pre)**
-
-Decime cuál sigue.
-```
-
+# ✔️ Backlog General actualizado.

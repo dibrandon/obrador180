@@ -109,7 +109,7 @@ function App() {
       <footer className="o-footer">
         <div className="o-footer__inner">
           <span>© {new Date().getFullYear()} Obrador 180 graus.</span>
-          <span>MVP v0.9-pre · Sitges / Vilanova</span>
+          <span>MVP v0.9 Sitges / Vilanova</span>
         </div>
       </footer>
     </div>

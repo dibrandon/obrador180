@@ -1,280 +1,244 @@
-# Plan de diseño Frontend – Obrador 180 graus
+# 🎨 **Plan de diseño Frontend – Obrador 180 graus**
 
-Versión: v0.9-pre  
-Rama principal de diseño: `feature/frontend-redesing`
-Perfecto, vamos a dejar esto ordenado como si fuera el “guion maestro” del frontend Odilio-Vogue™ 😄
-Sin código, solo mapa mental + épicas claras.
+**Versión:** `v0.9`
+**Rama:** `feature/frontend-redesing`
 
----
-
-## 0️⃣ Contexto: qué queremos conseguir
-
-**Meta:** pasar de *MVP funcional* a *MVP que parece web de pastelería boutique real*, siguiendo el estilo que definimos:
-
-* Fondo crema suave, nada de rosa chillón.
-* Tipografía mezcla **serif elegante + sans limpia**.
-* Hero claro: qué somos, dónde estamos, cómo se encarga.
-* Cartas con fotos bien recortadas, botón de WhatsApp protagonista.
-* Navbar pegado arriba en scroll, simple, sin cosas “techie”.
-* Todo **mobile-first**, sin sustos raros en móvil.
-
-Y todo eso sin cargarnos nada del backend / admin: solo **piel pública**.
+> Documento maestro del diseño público.
+> Resume estética, tono, épicas, decisiones, prioridades y visión futura.
+> No contiene código: es puramente conceptual.
 
 ---
 
-## 1️⃣ Dónde estamos hoy (resumen rápido)
+# 0️⃣ **Contexto actual**
 
-Ya tenemos:
+El frontend público ya no es solo un MVP:
+es una **web boutique artesanal**, consistente y casi lista para demo.
 
-* ✅ `o-shell`, `o-main`, `o-section` y footer montados.
-* ✅ Paleta y tokens en `tokens.css` con colores “obrador” razonables.
-* ✅ Hero con título, párrafo, meta y CTA “Ver carta”.
-* ✅ Cards de producto con foto, nombre, descripción, precio y botón de WhatsApp.
-* ✅ Grid responsive con densidades (`compact / cozy / roomy`) a nivel CSS.
-* ✅ Branch separada `feature/frontend-redesing` para poder romper sin miedo.
+El estilo adoptado es **Odilio Vogue Style**:
 
-Por pulir / arreglar:
+* Paleta pastel: crema, salmón suave, marrón chocolate → nada estridente.
+* Tipografía serif + sans equilibrada (Playfair + Inter).
+* Sombra suaves, bordes redondeados, layout elegante.
+* Criterio visual principal: **“si parece técnico antes que elegante, no va.”**
 
-* ⏳ Navbar: sticky + centrado + espaciados + comportamiento de links.
-* ⏳ Densidad: toggle roto, no hay control visible ni estado claro.
-* ⏳ Falta sección **“Nosotros”**.
-* ⏳ Textos aún “técnicos” en algunos sitios, no tan pastelería real.
-* ⏳ Backoffice no está alineado visualmente con el nuevo estilo (de momento lo dejamos en “más funcional que bonito”).
+El backend y el admin **NO se tocan** en esta fase:
+la prioridad es **pulir la cara pública**.
 
 ---
 
-## 2️⃣ Objetivo visual final (“Odilio Vogue style”)
+# 1️⃣ **Dónde estamos hoy (estado real a v0.9)**
 
-Queremos que la home pública transmita:
+Todo esto YA está implementado:
 
-1. **Arriba del todo:**
+### 🟢 Base visual consolidada
 
-   * Barra limpia, con logo/título + 2–3 enlaces (Inicio, Carta, Nosotros).
-   * Siempre visible al hacer scroll (sticky), sin romper estética móvil.
+* `reset.css` + `tokens.css` + `base.css` + `layout.css` funcionando en orden.
+* Paleta unificada al estilo pastel boutique.
+* Tipografías serif/sans cargadas de forma correcta.
+* Carga UTF-8 corregida (se eliminó todo caracter corrupto).
 
-2. **Hero:**
+### 🟢 Componentes principales listos
 
-   * Título claro: *Pastelería artesanal de Vilanova*
-   * Subtexto que suene humano: ingredientes nobles, encargos personalizados.
-   * Un único botón bien gordo: *Ver carta* que te baja a `#carta`.
+* Hero completo con copys finales.
+* Carta con productos reales conectados al backend.
+* ProductCard limpia, estable y con fallback robusto.
+* ProductGrid con estados “loading/error/vacío” coherentes.
+* Navbar estable y visualmente coherente (no se toca).
+* Sección Nosotros implementada.
+* Sección Encargos implementada.
+* Footer mínimo.
 
-3. **Carta:**
+### 🟢 Backoffice (solo a nivel diseño)
 
-   * Cards aireadas, fotos bonitas, precio claro y botón de encargo.
-   * Densidad configurable (2–4 columnas en desktop, 1–2 en móvil según modo).
+* No está dentro de esta guía estética (se deja funcional por el MVP).
+* Todos los copys admin están ya corregidos.
 
-4. **Nosotros:**
+### 🟡 Pendientes visuales v0.9 → v1.0
 
-   * Una sección corta que cuente quiénes son, dónde están, cómo trabajan.
-   * CTA secundario: un enlace al WhatsApp o a Google Maps.
-
-5. **Footer:**
-
-   * Discreto, con año, nombre del obrador y versión.
-
----
-
-## 3️⃣ Épicas que quedan por delante (BIEN detalladas)
-
-### ÉPICA 1 – Sistema visual sólido (tokens + layout)
-
-**Objetivo:** dejar la base visual blindada para no seguir parchando.
-
-**Estado actual:**
-
-* Tokens: definidos (fondos, texto, cta, bordes, radios, etc.).
-* Layout base: `o-shell`, `o-main`, `o-section`, `o-footer` implementados.
-
-**Acciones (sin código, pero claras):**
-
-1. **Revisar tokens vs diseño real:**
-
-   * Alinear colores de fondo y texto a lo que se ve en pantalla (el “blanco crema Vogue”, no rosa).
-   * Definir bien qué variable se usa en:
-
-     * fondo general de página,
-     * fondo de secciones,
-     * fondo de cards.
-
-2. **Congelar tipografías:**
-
-   * Confirmar que los estilos del hero y header usan **serif** solo donde aporta (marca/títulos) y **sans** en textos largos.
-   * Evitar que el admin y la parte pública se pisen fuentes.
-
-3. **Limpiar restos legacy:**
-
-   * Eliminar classes viejas que ya no usemos (`.header`, `.brand` viejas, toggles muertos).
-   * Dejar sólo las clases que forman parte de la maqueta actual.
-
-👉 Resultado: un CSS de base donde cada variable tiene un propósito, sin basura ni duplicados. Esto reduce sorpresas más adelante.
+* Toggle de densidades (Compact / Cozy / Roomy).
+* Ajustes finos de spacing en carta y hero.
+* QA en móviles reales (iPhone / Android).
+* Footer definitivo.
 
 ---
 
-### ÉPICA 2 – Navbar “de revista”: sticky, usable y limpio
+# 2️⃣ **Objetivo visual final (Odilio Vogue Style)**
 
-**Objetivo:** header que se siente app/web seria, no demo.
+El frontend debe transmitir:
 
-**Estado actual:**
+### 1. **Navbar**
 
-* Header con `o-header` y `HeaderNav`.
-* No está sticky y el layout en móvil se ve comprimido/pegado.
-* Links funcionan, pero UX y alineación no convencen.
+* Limpio y discreto.
+* Siempre visible (sticky suave).
+* No molestar en móvil.
+* Enlaces: Inicio, Carta, Nosotros.
 
-**Acciones:**
+### 2. **Hero elegante y claro**
 
-1. **Sticky bien resuelto:**
+* Título: *Pastelería artesanal de Vilanova*.
+* Subtítulo humano: ingredientes nobles, trato directo.
+* CTA único: *Ver carta*.
+* Layout aireado, pastel suave detrás.
 
-   * Hacer que la barra se quede arriba al scrollear (sin parpadeos ni solaparse con el hero).
-   * Asegurar que en móvil no tapa contenido relevante (margen superior adecuado o padding en la sección hero).
+### 3. **Carta**
 
-2. **Alineación y espaciado:**
+* Cards con foto clara, texto justo y CTA WhatsApp.
+* Densidades ajustables mediante toggle.
+* Títulos y precios muy visibles.
 
-   * Centrar visualmente el contenido: que el bloque marca+nav no se pegue a la izquierda.
-   * Ajustar paddings horizontales para que respire en escritorio y móvil.
+### 4. **Nosotros**
 
-3. **Marca única y consistente:**
+* Dos o tres párrafos cortos, tono humano y cercano.
+* CTA secundario (WhatsApp o Google Maps).
+* Mismo estilo tipográfico y colores que el hero.
 
-   * Decidir un solo tratamiento de “Obrador 180 graus” (el que más te gusta) y usarlo tanto en:
+### 5. **Footer**
 
-     * la marca del header,
-     * opcionalmente en el hero, pero sin duplicar texto raro.
-   * Asegurar que al hacer click en la marca vas a `#top` (inicio) siempre.
-
-4. **Enlaces de navegación claros:**
-
-   * “Inicio” → `#top`
-   * “Carta” → `#carta`
-   * “Nosotros” → `#nosotros`
-   * Ajustar espaciado entre enlaces y estados hover/active (mínimo: cambio de fondo suave y/o color de texto).
-
-5. **Comportamiento en móvil:**
-
-   * Evitar que queden tres pill demasiado pegadas; si hace falta, que pasen a dos filas pero sin romper el layout.
-   * Revisar tamaños de letra y padding para dedos gordos de padre medio dormido 😅
-
-👉 Resultado: barra que te acompaña siempre, parece de marca cuidada y no molesta en móvil.
+* Discreto, minimalista.
+* Año actual + nombre del obrador + versión.
 
 ---
 
-### ÉPICA 3 – Carta / catálogo realmente usable
+# 3️⃣ **Épicas actualizadas**
 
-**Objetivo:** que el listado de productos sea fácil de escanear y de encargar, tanto en móvil como en desktop.
+## ⭐ ÉPICA 1 – Sistema visual sólido (tokens + layout + tipografías)
 
-**Estado actual:**
+### Estado actual:
 
-* Grid y cards ya funcionan.
-* Botón “Encargar por WhatsApp” ok.
-* Densidades definidas a nivel CSS, pero el toggle visual está roto / ausente.
+* Paleta final aplicada.
+* Tipos y escalas listos.
+* Layouts base (`o-shell`, `o-section`, `o-main`) estables.
 
-**Acciones:**
+### Acciones restantes:
 
-1. **Revisión visual de cards:**
-
-   * Confirmar que todas las fotos se ven con el mismo ratio, sin “saltitos”.
-   * Chequear que el espacio entre cards en distintas densidades no se vuelve ni demasiado apretado ni excesivamente aireado.
-   * Ajustar tipografías: título bien fuerte, descripción legible pero secundaria, precio bien visible.
-
-2. **Botón de WhatsApp protagonista:**
-
-   * Ver que el CTA dentro de la card se lee bien, no compite con nada raro (ni colores chillones).
-   * Asegurar que el texto es claro y corto: *Encargar por WhatsApp* está bien para MVP.
-
-3. **Densidades como feature real (no solo CSS):**
-
-   * Volver a activar el toggler (el componente que ya tenías) y conectarlo con las clases de densidad (`data-density`).
-   * Ver que en móvil:
-
-     * `compact` = más productos a la vista (2 col si cabe), sin romper la legibilidad.
-     * `cozy` = vista estándar.
-     * `roomy` = foco en foto y texto largo.
-   * Decidir si guardas la elección en `localStorage` para que el cliente siempre vea la web como le gusta (lo tenías ideado, es solo respetarlo).
-
-4. **Texto de la sección Carta:**
-
-   * Revisar copy de “Nuestra carta / descripción” para que suene más a obrador real y menos a texto de demo (“Hechos con ingredientes nobles…” va bien, sólo afinar tonos).
-
-👉 Resultado: la carta se siente tienda real, se entiende, y puedes navegarla cómodo en cualquier dispositivo.
+1. Revisar valores finales de spacing (márgenes en secciones).
+2. Confirmar uso consistente de tipografías serif para títulos + sans para cuerpo.
+3. Ajustar sombras y bordes para mantener coherencia “Vogue”.
+4. Eliminar cualquier clase legacy o estilo zombie.
 
 ---
 
-### ÉPICA 4 – Sección “Nosotros” (storytelling corto pero potente)
+## ⭐ ÉPICA 2 – Navbar “de revista”, estable y discreto
 
-**Objetivo:** dar contexto humano: quiénes son, dónde están, por qué confiar.
+### Estado actual:
 
-**Estado actual:**
+* Diseño ya aceptado, funcional y estable.
+* No se modifica más por petición explícita del cliente.
 
-* Enlaces prevén un `#nosotros` pero la sección no existe todavía.
+### Acciones:
 
-**Acciones:**
+* Solo QA móvil:
 
-1. **Definir bloque “Nosotros”:**
+  * chequeo de espaciados,
+  * confirmación de que no tapa contenido,
+  * scroll-margin-top correcto para anclas.
 
-   * Una sección `o-section` con:
-
-     * Título tipo: *Quiénes somos* / *El obrador*.
-     * 1–2 párrafos cortos: historia, enfoque artesanal, ubicación (Vilanova / Sitges).
-     * Lista corta o frase sobre tipos de encargos (cumples, eventos, etc.).
-
-2. **CTA secundario:**
-
-   * Un enlace textual o botón más discreto que el del hero:
-
-     * “Escríbenos por WhatsApp para hablar de tu celebración”.
-     * Opcional enlace a Maps si en un futuro quieres mostrar dirección.
-
-3. **Opcional visual:**
-
-   * Reservar espacio para una foto futura del obrador o de un pastel (aunque ahora sea solo un bloque de color / placeholder).
-
-4. **Coherencia con el resto:**
-
-   * Reusar las mismas tipografías y colores que el hero, sin inventar una tercera estética.
-
-👉 Resultado: cuando el cliente baja, no solo ve productos, también siente que hay personas detrás.
+**Nada más se toca en esta épica.**
 
 ---
 
-### ÉPICA 5 – Estado “Lista para demo cliente”
+## ⭐ ÉPICA 3 – Carta usable y agradable
 
-**Objetivo:** dejar la parte pública en un estado donde tú puedas decir: *“esto es nuestro MVP de web”* sin pedir perdón.
+### Estado actual:
 
-**Acciones:**
+* Grid estable.
+* Cards robustas y coherentes.
+* Textos limpios, precios seguros y WhatsApp seguro.
 
-1. **Revisión mobile-first:**
+### Acciones v0.9 → v1.0:
 
-   * Mirar en móvil real (tu teléfono): navbar, hero, carta, botón WhatsApp.
-   * Ajustar lo que se sienta incómodo: tamaños de letra, espacios, scroll a anclas.
-
-2. **Accesibilidad mínima:**
-
-   * Comprobar contrastes del texto principal y del CTA.
-   * Asegurar que los botones tienen estados hover/focus razonables.
-
-3. **Textos finales:**
-
-   * Ajustar microcopy: títulos, subtítulos, tagline bajo el CTA del hero.
-   * Quitar anglicismos o tecnicismos donde no hagan falta.
-
-4. **Limpieza de código / CSS:**
-
-   * Eliminar comentarios de pruebas (`CTA TEST`, etc.).
-   * Borrar estilos muertos que ya no se usan en ningún componente.
-
-5. **Docs / captura para README:**
-
-   * Tener claro que versión del diseño es esta (`v0.9-pre` o similar).
-   * Preparar 1–2 screenshots bonitas para README y para enseñar al cliente.
-
-👉 Resultado: puedes entrar con el cliente, abrir la web en el móvil, y se ve y siente como “su” pastelería online.
+1. **Agregar el toggle de densidades** en cabecera de la carta.
+2. QA visual en móvil: spacing entre cards, saltos, ratios de imágenes.
+3. Ajuste final de tipografías (peso de títulos, tamaño del precio).
+4. Confirmar que el grid no vibra ni rompe al cambiar densidad.
 
 ---
 
-### ÉPICA 6 – (Opcional próxima fase) Alinear backoffice con el nuevo look
+## ⭐ ÉPICA 4 – Sección “Nosotros” elegante
 
-No es imprescindible para el MVP que vas a enseñar, pero a futuro:
+### Estado actual:
 
-* Llevar la misma paleta/estilo soft al panel admin (sin recargar).
-* Unificar botones, tipografías y espaciados básicos.
-* Tener la sensación de que admin y público son “la misma marca”.
+* Copys ya implementados.
+* Sección visible y coherente.
+
+### Acciones:
+
+1. QA móvil + spacing.
+2. Ajuste de serif/sans en encabezados.
+3. Definir si agregamos imagen futura (placeholder opcional).
+
+---
+
+## ⭐ ÉPICA 5 – Encargos / WhatsApp
+
+### Estado actual:
+
+* CTA principal en hero.
+* CTA secundario en carta y secciones.
+
+### Acciones:
+
+1. Revisar que todos los enlaces a WhatsApp funcionen igual.
+2. Ajustar mensaje por defecto según parámetros del producto.
+
+---
+
+## ⭐ ÉPICA 6 – Footer final
+
+### Estado actual:
+
+* Footer mínimo (todavía placeholder).
+
+### Acciones:
+
+1. Versión final:
+
+   * Año actual
+   * Nombre del obrador
+   * Versión del sistema
+2. Revisión de spacing y contraste.
+3. Opcional: enlace a política de cookies si el cliente lo pide.
+
+---
+
+## ⭐ ÉPICA 7 – Estado “Demo cliente” impecable
+
+### Acciones:
+
+1. Revisión móvil completa:
+
+   * navbar
+   * hero
+   * carta
+   * grid
+   * WhatsApp
+2. Comprobar scroll hasta anclas.
+3. Textos finales aprobados.
+4. Quitar cualquier comentario o styles muertos.
+5. Capturas de la web lista para README y presentación.
+
+---
+
+# 4️⃣ **Línea futura (post-MVP)**
+
+Estas tareas NO son parte del MVP pero pueden venir después:
+
+* Alinear estética del panel admin al estilo público.
+* Página “Contacto / ubicación” completa.
+* Página “Sobre nosotros” extendida.
+* Microanimaciones (fade-in en hero, hover en cards).
+* Filtros avanzados de catálogo.
+* Internacionalización (ES / CAT).
+* Incorporación de mapa o dirección real.
+* Botón WhatsApp flotante opcional.
+
+---
+
+# ✔️ **Estado del plan**
+
+* El diseño público está **casi completo**.
+* Solo faltan el **toggle Cozy**, QA móvil y microajustes.
+* El resto del proyecto (admin/backend) está en estado **estable** para mostrar.
+* El plan guía ya refleja la realidad actual y las metas para v1.0.
 
 ---
