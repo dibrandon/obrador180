@@ -9,7 +9,7 @@ export default function AdminStatusBar({ stats }) {
     <header className="admin-statusbar">
       <div className="admin-statusbar__title">
         <h1>Panel de productos</h1>
-        <p>Resumen rápido del estado de la carta.</p>
+        <p>Agregá, editá o actualizá la carta del obrador.</p>
       </div>
 
       <div className="admin-statusbar__chips">

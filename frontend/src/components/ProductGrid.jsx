@@ -19,7 +19,7 @@ export default function ProductGrid() {
     })();
   }, []);
 
-  if (status === "loading") return <p>Cargando productos…</p>;
+  if (status === "loading") return <p>Cargando productos...</p>;
   if (status === "error") return <p>No se pudieron cargar los productos.</p>;
   if (items.length === 0) return <p>Pronto subiremos productos.</p>;
 

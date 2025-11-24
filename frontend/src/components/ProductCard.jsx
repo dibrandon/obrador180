@@ -15,12 +15,10 @@ export default function ProductCard({ product }) {
 
   const descriptionText =
     (description || "").trim() ||
-    "Pronto añadiremos la descripción de este producto.";
+    "Pastelería artesanal hecha a mano, elaborada con ingredientes nobles.";
 
   const productName = name || "un producto";
-  const waMessage = `Hola, quiero encargar: ${productName}${
-    hasValidPrice ? ` – ${displayPrice}` : ""
-  }.`;
+  const waMessage = `Hola, me interesa el producto "${productName}". ¿Me podés contar un poco más?`;
 
   const waLink = hasWhatsApp
     ? `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`

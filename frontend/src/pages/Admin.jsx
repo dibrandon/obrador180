@@ -105,7 +105,7 @@ export default function AdminPage() {
   return (
     <div className="admin-layout">
       <header className="admin-header">
-        <h1 className="admin-header__title">Panel administrador</h1>
+        <h1 className="admin-header__title">Panel de productos</h1>
         <div className="admin-header__actions">
           <button
             type="button"
@@ -122,7 +122,7 @@ export default function AdminPage() {
       <AdminNav view={view} onChange={setView} />
 
       <main className="admin-content">
-        {status === "loading" && <p>Cargando productos…</p>}
+        {status === "loading" && <p>Cargando productos...</p>}
         {status === "error" && (
           <p>No se pudieron cargar los productos del panel.</p>
         )}

@@ -49,7 +49,10 @@ export default function Dashboard() {
     return (
       <div className="admin-shell admin-shell--center">
         <div className="admin-card">
-          <h1 className="admin-form__title">Bienvenido, Obrador 180 graus</h1>
+          <h1 className="admin-form__title">Panel de productos</h1>
+          <p className="admin-status-text">
+            Agregá, editá o actualizá la carta del obrador.
+          </p>
           <p className="admin-status-text">
             Servidor no disponible. Intenta de nuevo en unos segundos.
           </p>
@@ -62,7 +65,10 @@ export default function Dashboard() {
     return (
       <div className="admin-shell admin-shell--center">
         <div className="admin-card">
-          <h1 className="admin-form__title">Bienvenido, Obrador 180 graus</h1>
+          <h1 className="admin-form__title">Panel de productos</h1>
+          <p className="admin-status-text">
+            Agregá, editá o actualizá la carta del obrador.
+          </p>
           <p className="admin-status-text">
             Ocurrió un error al cargar las estadísticas.
           </p>
@@ -76,7 +82,12 @@ export default function Dashboard() {
   return (
     <div className="admin-shell">
       <header className="admin-header">
-        <h1 className="admin-header__title">Bienvenido, Obrador 180 graus</h1>
+        <div>
+          <h1 className="admin-header__title">Panel de productos</h1>
+          <p className="admin-status-text">
+            Agregá, editá o actualizá la carta del obrador.
+          </p>
+        </div>
         <div className="admin-header__actions">
           <button
             type="button"

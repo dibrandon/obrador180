@@ -51,7 +51,7 @@ export default function AdminLogin() {
     setErr("");
     const trimmed = key.trim();
     if (!trimmed) {
-      setErr("Ingresá la clave.");
+      setErr("Ingresá la contraseña.");
       return;
     }
     setSubmitting(true);
@@ -60,11 +60,11 @@ export default function AdminLogin() {
     if (!result.ok) {
       if (result.reason === "unauthorized") {
         clearAdminKey();
-        setErr("Clave inválida o sin permisos.");
+        setErr("Contraseña inválida o sin permisos.");
       } else if (result.reason === "network") {
         setErr("Servidor no disponible. Intenta nuevamente en unos minutos.");
       } else {
-        setErr("No se pudo verificar la clave. Reintenta.");
+        setErr("No se pudo verificar la contraseña. Reintenta.");
       }
       setSubmitting(false);
       return;
@@ -83,16 +83,16 @@ export default function AdminLogin() {
   return (
     <div className="admin-shell admin-shell--center">
       <div className="admin-card">
-        <h1 className="admin-form__title">Acceso administrador</h1>
+        <h1 className="admin-form__title">Ingresá al panel administrativo</h1>
 
         <form onSubmit={onSubmit} className="admin-card__form">
           <label className="admin-form__label">
-            Clave admin
+            Contraseña
             <input
               type="password"
               autoFocus
               className="admin-form__input"
-              placeholder="Clave admin"
+              placeholder="Contraseña"
               value={key}
               onChange={(e) => setKey(e.target.value)}
             />
@@ -116,7 +116,7 @@ export default function AdminLogin() {
             className="admin-form__button"
             disabled={submitting}
           >
-            {submitting ? "Verificando..." : "Entrar"}
+            {submitting ? "Verificando..." : "Iniciar sesión"}
           </button>
         </form>
 
