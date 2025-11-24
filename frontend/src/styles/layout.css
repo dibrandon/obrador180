@@ -450,94 +450,167 @@
   margin: 10px 0 18px;
 }
 
+.product-grid__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .product-grid__toolbar {
+    justify-content: flex-start;
+  }
+}
+
+.view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 6px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+}
+
+.view-toggle__btn {
+  border: none;
+  background: transparent;
+  padding: 0.38rem 0.78rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.view-toggle__btn:hover {
+  color: var(--color-text-main);
+}
+
+.view-toggle__btn:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.16);
+  outline-offset: 2px;
+}
+
+.view-toggle__btn.is-active {
+  color: var(--color-text-main);
+  background: linear-gradient(135deg, var(--color-button-1), var(--color-button-2));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
 /* ========== DENSIDADES ========== */
 
 /* Compacta: más catálogo */
-:root[data-density="compact"] .grid {
+:root[data-density="compact"] .grid,
+.product-grid[data-density="compact"] {
   grid-template-columns: repeat(2, 1fr);
 }
 
-:root[data-density="compact"] .card__media {
+:root[data-density="compact"] .card__media,
+.product-grid[data-density="compact"] .card__media {
   aspect-ratio: 1 / 1;
 }
 
-:root[data-density="compact"] .card__body {
+:root[data-density="compact"] .card__body,
+.product-grid[data-density="compact"] .card__body {
   padding: 10px 12px;
 }
 
-:root[data-density="compact"] .card__title {
+:root[data-density="compact"] .card__title,
+.product-grid[data-density="compact"] .card__title {
   font-size: 0.98rem;
 }
 
-:root[data-density="compact"] .card__desc {
+:root[data-density="compact"] .card__desc,
+.product-grid[data-density="compact"] .card__desc {
   display: none;
 }
 
-:root[data-density="compact"] .button {
+:root[data-density="compact"] .button,
+.product-grid[data-density="compact"] .button {
   margin: 0 12px 12px;
   padding: 10px 12px;
 }
 
 /* Cómoda: lectura estándar */
-:root[data-density="cozy"] .grid {
+:root[data-density="cozy"] .grid,
+.product-grid[data-density="cozy"] {
   grid-template-columns: 1fr;
 }
 
 @media (min-width: 480px) {
-  :root[data-density="cozy"] .grid {
+  :root[data-density="cozy"] .grid,
+  .product-grid[data-density="cozy"] {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-:root[data-density="cozy"] .card__media {
+:root[data-density="cozy"] .card__media,
+.product-grid[data-density="cozy"] .card__media {
   aspect-ratio: 4 / 3;
 }
 
-:root[data-density="cozy"] .card__title {
+:root[data-density="cozy"] .card__title,
+.product-grid[data-density="cozy"] .card__title {
   font-size: 1.02rem;
 }
 
-:root[data-density="cozy"] .card__body {
+:root[data-density="cozy"] .card__body,
+.product-grid[data-density="cozy"] .card__body {
   padding: 12px 14px 10px;
 }
 
 /* Amplia: foco en foto/texto */
-:root[data-density="roomy"] .grid {
+:root[data-density="roomy"] .grid,
+.product-grid[data-density="roomy"] {
   grid-template-columns: 1fr;
   gap: 18px;
 }
 
 @media (min-width: 768px) {
-  :root[data-density="roomy"] .grid {
+  :root[data-density="roomy"] .grid,
+  .product-grid[data-density="roomy"] {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-:root[data-density="roomy"] .card__media {
+:root[data-density="roomy"] .card__media,
+.product-grid[data-density="roomy"] .card__media {
   aspect-ratio: 16 / 9;
 }
 
-:root[data-density="roomy"] .card__title {
+:root[data-density="roomy"] .card__title,
+.product-grid[data-density="roomy"] .card__title {
   font-size: 1.12rem;
 }
 
-:root[data-density="roomy"] .card__body {
+:root[data-density="roomy"] .card__body,
+.product-grid[data-density="roomy"] .card__body {
   padding: 16px 18px 12px;
 }
 
 /* Escalados extra para compacta en pantallas grandes */
 @media (min-width: 480px) {
-  :root[data-density="compact"] .grid {
+  :root[data-density="compact"] .grid,
+  .product-grid[data-density="compact"] {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (min-width: 768px) {
-  :root[data-density="compact"] .grid {
+  :root[data-density="compact"] .grid,
+  .product-grid[data-density="compact"] {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  :root[data-density="cozy"] .grid {
+  :root[data-density="cozy"] .grid,
+  .product-grid[data-density="cozy"] {
     grid-template-columns: repeat(3, 1fr);
   }
 }
