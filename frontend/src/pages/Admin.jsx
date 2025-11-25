@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminStatusBar from "@/components/admin/AdminStatusBar.jsx";
 import AdminNav from "@/components/admin/AdminNav.jsx";
+import AdminList from "@/components/admin/AdminList.jsx";
 import AdminForm from "@/components/AdminForm.jsx";
 import { clearAdminKey, getInactiveProducts, getProducts } from "@/lib/api";
 import { subscribeStatsChanged } from "@/lib/events.js";
@@ -23,27 +24,6 @@ function calcularStats(products) {
   }
 
   return { total, activos, pausados };
-}
-
-function filtrarPorVista(products, view) {
-  if (view === "todos") return products;
-
-  if (view === "activos") {
-    return products.filter((p) => (p.status || "active") === "active");
-  }
-
-  if (view === "pausados") {
-    return products.filter(
-      (p) => p.status === "paused" || p.status === "hidden"
-    );
-  }
-
-  return products;
-}
-
-function formatStatusLabel(status) {
-  if (status === "paused" || status === "hidden") return "Pausado";
-  return "Activo";
 }
 
 export default function AdminPage() {
@@ -92,10 +72,6 @@ export default function AdminPage() {
   }, []);
 
   const stats = useMemo(() => calcularStats(products), [products]);
-  const filtered = useMemo(
-    () => filtrarPorVista(products, view),
-    [products, view]
-  );
 
   const handleLogout = () => {
     clearAdminKey();
@@ -134,38 +110,7 @@ export default function AdminPage() {
           </section>
         )}
 
-        {status === "idle" && view !== "nuevo" && (
-          <section
-            aria-label="Listado y gestión de productos"
-            className="admin-main__list"
-          >
-            {filtered.length === 0 ? (
-              <p>No hay productos en esta vista.</p>
-            ) : (
-              <ul className="admin-product-list">
-                {filtered.map((p) => (
-                  <li
-                    key={p._id || p.id || p.name}
-                    className="admin-product-list__item"
-                  >
-                    <div className="admin-product-list__main">
-                      <strong>{p.name || "(Sin nombre)"}</strong>
-                      <span className="admin-product-list__status">
-                        {formatStatusLabel(p.status || "active")}
-                        {!p.image ? " · Sin foto" : ""}
-                      </span>
-                    </div>
-                    {p.price != null && (
-                      <span className="admin-product-list__price">
-                        {p.price} €
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        )}
+        {status === "idle" && view !== "nuevo" && <AdminList />}
       </main>
     </div>
   );

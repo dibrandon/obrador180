@@ -1,22 +1,28 @@
+import { Link, useLocation } from "react-router-dom";
+
 export default function HeaderNav() {
+  const { pathname } = useLocation();
+  const linkClass = (active) =>
+    `o-header__link${active ? " o-header__link--active" : ""}`;
+
   return (
     <div className="o-header__pill">
-      <a href="#top" className="o-header__brand">
+      <Link to="/" className="o-header__brand">
         <span className="o-header__brand-top">OBRADOR</span>
-        <span className="o-header__brand-bottom">180º graus</span>
-      </a>
+        <span className="o-header__brand-bottom">180 graus</span>
+      </Link>
 
-      <nav className="o-header__nav" aria-label="Navegación principal">
-        <a href="#top" className="o-header__link">
+      <nav className="o-header__nav" aria-label="Navegacion principal">
+        <Link to="/" className={linkClass(pathname === "/")}>
           Inicio
-        </a>
-        <a href="#carta" className="o-header__link o-header__link--active">
+        </Link>
+        <Link to="/carta" className={linkClass(pathname === "/carta")}>
           Carta
-        </a>
-        <a href="#nosotros" className="o-header__link">
+        </Link>
+        <a href="/#nosotros" className="o-header__link">
           Nosotros
         </a>
-        <a href="#contacto" className="o-header__link">
+        <a href="/#contacto" className="o-header__link">
           Encargos
         </a>
       </nav>

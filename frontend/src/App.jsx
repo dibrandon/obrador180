@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
 import HeaderNav from "./components/HeaderNav";
-import ProductGrid from "./components/ProductGrid";
+import FeaturedProduct from "./components/FeaturedProduct";
+import PromoCard from "./components/PromoCard";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -35,9 +38,9 @@ function App() {
               </p>
 
               <div className="hero__actions">
-                <a href="#carta" className="c-btn c-btn--primary">
+                <Link to="/carta" className="c-btn c-btn--primary">
                   Ver carta
-                </a>
+                </Link>
                 <span className="hero__tagline">
                   Empezá por la carta base y luego afinamos tu pedido juntos.
                 </span>
@@ -48,18 +51,9 @@ function App() {
           </div>
         </section>
 
-        {/* CARTA BASE */}
-        <section id="carta" className="o-section">
-          <header style={{ marginBottom: "1rem" }}>
-            <h2 className="o-section__title">Nuestra carta</h2>
-            <p className="o-section__subtitle">
-              Hechos con ingredientes nobles y paciencia artesanal. Elegí tus
-              favoritos y coordiná tu pedido por WhatsApp.
-            </p>
-          </header>
+        <FeaturedProduct />
 
-          <ProductGrid />
-        </section>
+        <PromoCard />
 
         {/* NOSOTROS */}
         <section id="nosotros" className="o-section o-section--muted">
@@ -96,7 +90,12 @@ function App() {
             </p>
           </header>
           <div className="hero__actions">
-            <a href="#carta" className="c-btn c-btn--primary">
+            <a
+              href="https://wa.me/34622646019"
+              className="c-btn c-btn--primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Hablar por WhatsApp
             </a>
             <span className="hero__tagline">
@@ -106,12 +105,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="o-footer">
-        <div className="o-footer__inner">
-          <span>© {new Date().getFullYear()} Obrador 180 graus.</span>
-          <span>MVP v0.9 Sitges / Vilanova</span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
