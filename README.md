@@ -1,6 +1,6 @@
 # 🍰 **Obrador 180 graus – MVP Web**
 
-**Versión actual:** `v0.9 — Home + Carta + Nosotros + Dashboard auto-sync`
+**Versión actual:** `v0.9 — Home + Carta + Nosotros + Producto destacado + Dashboard auto-sync`  
 **Deploy:** Vercel (frontend) · Render (backend) · Cloudinary (imágenes)
 
 Proyecto desarrollado con stack **MERN (MongoDB, Express, React, Node.js)**
@@ -21,12 +21,13 @@ y recuperar su clientela mediante una experiencia digital clara, estética y ág
 
 # 🗂️ **Estructura general del proyecto**
 
-```
+```bash
 obrador180/
 ├── frontend/        # React + Vite – web pública + admin
 │   ├── src/
-│   │   ├── components/   # ProductCard, Grid, HeaderNav, ViewToggle...
-│   │   ├── pages/        # Admin, Dashboard, Login, NotFound
+│   │   ├── components/   # ProductCard, Grid, HeaderNav, FeaturedProduct, PromoCard, Footer...
+│   │   ├── components/admin/  # AdminList, AdminNav, AdminStatusBar
+│   │   ├── pages/        # Home(App), Carta, Admin, Dashboard, Login, NotFound
 │   │   ├── routes/       # AdminGuard + rutas privadas
 │   │   ├── lib/          # apiFetch, uploadImage, events (auto-sync)
 │   │   └── styles/       # reset, tokens, base, layout, admin.css
@@ -42,7 +43,7 @@ obrador180/
 ├── docs/            # Resúmenes diarios, backlogs, diseño, ADR
 ├── design/          # Paleta Odilio Vogue, wireframes y referencias
 └── README.md
-```
+````
 
 ---
 
@@ -70,10 +71,10 @@ obrador180/
 
 ---
 
-# 🧩 **Estado actual del MVP (v0.9-pre)**
+# 🧩 **Estado actual del MVP (`v0.9` estable)**
 
 El sistema ya es **estable, funcional y listo para demo cliente**.
-Se completó tanto el catálogo público como el backoffice con métricas.
+Se completó tanto el catálogo público como el backoffice con métricas y panel admin renovado.
 
 ---
 
@@ -83,13 +84,19 @@ Se completó tanto el catálogo público como el backoffice con métricas.
 
 * Hero limpio con copy artesanal.
 * CTA “Ver carta” que scrollea suave al catálogo.
-* Estilo pastel “Odilio Vogue style”.
+* **Producto destacado**: componente `FeaturedProduct` que muestra el **último producto creado** en la API entre el hero y el bloque promo.
+* **Bloque promo Instagram**: `PromoCard` enlazada a reel/post de IG para dar sensación de escaparate vivo.
+* Estilo pastel **“Odilio Vogue style”**.
 
 ### **Carta**
 
 * Conectada en vivo al backend.
 * Cards estables con nombre, foto, descripción, precio, CTA WA.
-* Toggle de densidades (`compact / cozy / roomy`) listo para reactivar.
+* **Toggle de densidades operativo** (`compact / cozy / roomy`), con:
+
+  * Descripciones visibles donde toca (fix del bug anterior).
+  * Limpieza de reglas `root[data-density]` sobrantes en `layout.css`.
+* Layout preparado para escalar en número de productos sin romper la grid.
 
 ### **Sección “Nosotros”**
 
@@ -99,14 +106,38 @@ Se completó tanto el catálogo público como el backoffice con métricas.
 
 ### **Footer**
 
-* Versión + nombre del obrador.
-* Placeholder mínimo para legal.
+* **Footer unificado (`Footer.jsx`)** reutilizado en Home y Carta.
+* Muestra versión + nombre del obrador.
+* Placeholder mínimo para información legal futura.
+
+### **Navbar / header móvil**
+
+* Nav tipo pill con **wrap y padding ajustado ≤480px** para evitar desbordes.
+* Espaciado (`gap`, `padding` seguro) revisado para que el menú sea legible en móviles pequeños.
 
 ---
 
 ## 🟢 **Backoffice (admin)**
 
-### 📊 **Dashboard nuevo**
+### 🧭 **Estructura del panel admin**
+
+* Ruta protegida `/admin`.
+* Página `Admin.jsx` simplificada que orquesta:
+
+  * `AdminNav` – navegación de vistas (activos / pausados / stats).
+  * `AdminStatusBar` – resumen rápido (totales, activos, archivados, última modificación).
+  * `AdminList` – lista de productos con acciones inline.
+
+### 📝 **Gestión de catálogo**
+
+* Lista combinada con **vista de activos y pausados/archivados**.
+* Edición inline de campos básicos (nombre, precio, descripción corta…).
+* **Alta / baja lógica**:
+
+  * Archivar/restaurar productos sin borrarlos de la base.
+* Indicadores claros de estado (activo / pausado).
+
+### 📊 **Dashboard + métricas**
 
 * Ruta protegida `/admin/dashboard`.
 * Estadísticas en vivo:
@@ -122,13 +153,14 @@ Se completó tanto el catálogo público como el backoffice con métricas.
 
   * `emitStatsChanged`
   * `subscribeStatsChanged`
-* Cualquier cambio se refleja al instante sin recargar la SPA.
+
+* Cualquier cambio (crear, editar, archivar, restaurar) se refleja al instante en el Dashboard **sin recargar la SPA**.
 
 ### 🔐 **Autenticación refinada**
 
 * Login con clave (`ADMIN_KEY`).
-* AdminGuard robusto (maneja `offline`, `network`, `unauthorized`).
-* No-store en rutas críticas (evita cache en el panel).
+* `AdminGuard` robusto (maneja `offline`, `network`, `unauthorized`).
+* Encabezados `no-store` en rutas críticas (evita cache del panel).
 
 ---
 
@@ -153,7 +185,7 @@ Se completó tanto el catálogo público como el backoffice con métricas.
 
 * Cache-control completo.
 
-* Compatible 100% con AdminLogin y Dashboard.
+* Compatible 100% con AdminLogin, Dashboard y nuevo AdminList.
 
 ---
 
@@ -173,7 +205,7 @@ Se completó tanto el catálogo público como el backoffice con métricas.
 
 ### Frontend
 
-```
+```bash
 cd frontend
 npm run dev
 npm run build
@@ -182,7 +214,7 @@ npm run preview
 
 ### Backend
 
-```
+```bash
 cd backend
 npm run dev
 npm start
@@ -192,13 +224,13 @@ npm start
 
 # 📅 **Roadmap de desarrollo**
 
-| Versión      | Estado | Contenido                                            |
-| ------------ | ------ | ---------------------------------------------------- |
-| **v0.6**     | ✔️     | CRUD admin + DB                                      |
-| **v0.7**     | ✔️     | Deploy completo (Render + Vercel)                    |
-| **v0.8.1**   | ✔️     | Dashboard + Auto-sync + Auth estable                 |
-| **v0.9** | 🟡     | Home pública + Carta + Nosotros (Odilio Vogue Style) |
-| **v1.0**     | ⏳      | Demo final para cliente                              |
+| Versión    | Estado | Contenido                                                        |
+| ---------- | ------ | ---------------------------------------------------------------- |
+| **v0.6**   | ✔️     | CRUD admin + DB                                                  |
+| **v0.7**   | ✔️     | Deploy completo (Render + Vercel)                                |
+| **v0.8.1** | ✔️     | Dashboard + Auto-sync + Auth estable                             |
+| **v0.9**   | ✔️     | Home pública + Carta + Nosotros + Producto destacado + Admin UX  |
+| **v1.0**   | ⏳      | Demo final para cliente (copys finales, QA móvil, pulido visual) |
 
 ---
 
@@ -209,9 +241,9 @@ npm start
 * `/docs/resumenDia5.md` – CRUD completo
 * `/docs/resumenDeploy6.md` – Deploy fullstack
 * `/docs/resumenDia8.md` – Dashboard + auto-sync
-* `/docs/resumenDia10-11.md` – Diseño público + Home
+* `/docs/resumenDia10-11.md` – Diseño público + Home, navbar y admin renovado
 
-*(Se actualiza a diario durante el sprint.)*
+*(Se actualiza a medida que avanzan los sprints.)*
 
 ---
 
@@ -220,7 +252,7 @@ npm start
 No forman parte del MVP, pero ya están pensados:
 
 * Página “Contacto / Ubicación”
-* Alineación estética del panel admin
+* Alineación estética del panel admin con el look público
 * Filtros avanzados para productos
 * Catálogo multilenguaje (ES/CAT)
 * Animaciones ligeras (fade, hover elegante)
@@ -241,5 +273,3 @@ No forman parte del MVP, pero ya están pensados:
 
 Proyecto interno / propietario.
 © 2025 — Alejandro.
-
----
