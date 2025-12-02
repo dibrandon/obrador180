@@ -4,6 +4,7 @@ import AdminStatusBar from "@/components/admin/AdminStatusBar.jsx";
 import AdminNav from "@/components/admin/AdminNav.jsx";
 import AdminList from "@/components/admin/AdminList.jsx";
 import AdminForm from "@/components/AdminForm.jsx";
+import AdminSettings from "@/components/admin/AdminSettings.jsx";
 import { clearAdminKey, getInactiveProducts, getProducts } from "@/lib/api";
 import { subscribeStatsChanged } from "@/lib/events.js";
 
@@ -98,10 +99,12 @@ export default function AdminPage() {
       <AdminNav view={view} onChange={setView} />
 
       <main className="admin-content">
-        {status === "loading" && <p>Cargando productos...</p>}
-        {status === "error" && (
+        {view !== "ajustes" && status === "loading" && <p>Cargando productos...</p>}
+        {view !== "ajustes" && status === "error" && (
           <p>No se pudieron cargar los productos del panel.</p>
         )}
+
+        {view === "ajustes" && <AdminSettings />}
 
         {status === "idle" && view === "nuevo" && (
           <section aria-label="Alta y edición de productos">
@@ -110,7 +113,7 @@ export default function AdminPage() {
           </section>
         )}
 
-        {status === "idle" && view !== "nuevo" && <AdminList />}
+        {status === "idle" && view !== "nuevo" && view !== "ajustes" && <AdminList />}
       </main>
     </div>
   );

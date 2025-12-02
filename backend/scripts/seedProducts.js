@@ -1,39 +1,81 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { Product } from "../models/Product.js";
 
 dotenv.config();
 
-async function run() {
-  await mongoose.connect(process.env.MONGO_URI);
+const MONGO_URI = process.env.MONGO_URI || process.env.DATABASE_URL;
+const CLEAN = process.argv.includes("--clean") || process.argv.includes("clean");
 
-  await Product.deleteMany({}); // limpio por si re-seed
-  await Product.insertMany([
-    {
-      name: "Cheesecake de frutos rojos",
-      description: "Base de galleta + crema suave, mermelada casera",
-      price: 24,
-      image: "https://res.cloudinary.com/demo/image/upload/sample.jpg"
-    },
-    {
-      name: "Tarta de limón y merengue",
-      description: "Crema de limón fresca, merengue italiano",
-      price: 22,
-      image: "https://res.cloudinary.com/demo/image/upload/sample.jpg"
-    },
-    {
-      name: "Selva Negra",
-      description: "Bizcocho de cacao, nata y cerezas al kirsch",
-      price: 26,
-      image: "https://res.cloudinary.com/demo/image/upload/sample.jpg"
-    }
-  ]);
+const SEED_TAG = "TEMP-SEED-180G";
 
-  console.log("🍰 Seed OK: 3 productos creados");
-  await mongoose.disconnect();
+async function connect() {
+  if (!MONGO_URI) {
+    console.error("Falta MONGO_URI en .env");
+    process.exit(1);
+  }
+  await mongoose.connect(MONGO_URI, { /* opciones */ });
+  console.log("Conectado a MongoDB");
 }
 
-run().catch(err => {
-  console.error("❌ Seed error:", err);
+async function seed() {
+  const items = Array.from({ length: 24 }).map((_, i) => {
+    const idx = i + 1;
+    const families = ["Empanada", "Budin", "Chipa", "Tarta", "Galleta", "Sandwich"];
+    const fam = families[i % families.length];
+    const precioBase = 1.5 + (i % 6) * 0.75;
+    return {
+      name: `${fam} demo #${idx}`,
+      description: `Producto demo ${fam.toLowerCase()} para pruebas de layout (item ${idx}).`,
+      price: Number(precioBase.toFixed(2)),
+      image: `https://picsum.photos/seed/obrador-${idx}/640/400`,
+      gallery: [],
+      isActive: true,
+      _seedTag: SEED_TAG
+    };
+  });
+
+  const ops = items.map(p => ({
+    updateOne: {
+      filter: { name: p.name },
+      update: { $set: p },
+      upsert: true
+    }
+  }));
+
+  const result = await Product.bulkWrite(ops, { ordered: false });
+  console.log("Seed ejecutado:", {
+    upserted: result.upsertedCount ?? "n/a",
+    modified: result.modifiedCount ?? "n/a",
+    matched: result.matchedCount ?? "n/a",
+  });
+
+  const count = await Product.countDocuments({ _seedTag: SEED_TAG });
+  console.log(`Total de productos sembrados (tag=${SEED_TAG}): ${count}`);
+}
+
+async function cleanSeed() {
+  const res = await Product.deleteMany({ _seedTag: SEED_TAG });
+  console.log(`Limpieza ejecutada. Documentos eliminados: ${res.deletedCount}`);
+}
+
+async function main() {
+  await connect();
+
+  if (CLEAN) {
+    console.log("Ejecutando modo CLEAN - borro los productos sembrados previamente");
+    await cleanSeed();
+    await mongoose.disconnect();
+    console.log("Desconectado");
+    return;
+  }
+
+  await seed();
+  await mongoose.disconnect();
+  console.log("Desconectado");
+}
+
+main().catch(err => {
+  console.error(err);
   process.exit(1);
 });

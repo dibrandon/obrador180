@@ -7,12 +7,16 @@ import {
   restoreProduct,
 } from "@/lib/api";
 import { emitStatsChanged, subscribeStatsChanged } from "@/lib/events.js";
+import { uploadImage } from "@/lib/uploadImage";
 
 export default function AdminList() {
   const [items, setItems] = useState([]);
   const [archived, setArchived] = useState([]);
   const [editId, setEditId] = useState(null);
   const [draft, setDraft] = useState({ name: "", price: "", description: "" });
+  const [galleryDraft, setGalleryDraft] = useState([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryError, setGalleryError] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -44,6 +48,36 @@ export default function AdminList() {
         p?.price === null || p?.price === undefined ? "" : String(p.price),
       description: p?.description || "",
     });
+    setGalleryDraft(Array.isArray(p?.gallery) ? p.gallery : []);
+    setGalleryError("");
+  }
+
+  async function addGalleryFiles(files) {
+    if (!files.length) return;
+    setGalleryError("");
+    setGalleryUploading(true);
+    try {
+      const uploaded = [];
+      for (const f of files) {
+        const url = await uploadImage(f);
+        uploaded.push(url);
+      }
+      setGalleryDraft((prev) => [...prev, ...uploaded]);
+    } catch (e) {
+      setGalleryError(e.message || "Error subiendo galeria");
+    } finally {
+      setGalleryUploading(false);
+    }
+  }
+
+  function onGalleryChange(e) {
+    const files = Array.from(e.target.files || []);
+    addGalleryFiles(files);
+    if (e.target) e.target.value = "";
+  }
+
+  function removeGalleryUrl(url) {
+    setGalleryDraft((prev) => prev.filter((u) => u !== url));
   }
 
   async function saveEdit(id) {
@@ -55,6 +89,7 @@ export default function AdminList() {
         name: name || "",
         price: Number(price),
         description: description || "",
+        gallery: galleryDraft,
       });
       setEditId(null);
       setMsg("Cambios guardados ✅");
@@ -163,6 +198,9 @@ export default function AdminList() {
                       {p.description ? (
                         <small style={{ color: "#555" }}>{p.description}</small>
                       ) : null}
+                      {Array.isArray(p.gallery) && p.gallery.length > 0 ? (
+                        <small style={{ color: "#777" }}>{p.gallery.length} foto(s) adicionales</small>
+                      ) : null}
                     </>
                   )}
 
@@ -220,11 +258,64 @@ export default function AdminList() {
                         disabled={busy}
                       />
 
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        <label style={{ fontSize: 13, fontWeight: 600 }}>Galería (opcional)</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={onGalleryChange}
+                          disabled={busy}
+                          style={{
+                            padding: "6px 8px",
+                            borderRadius: 8,
+                            border: "1px solid #d0d0d0",
+                            background: "#fff",
+                          }}
+                        />
+                        {galleryUploading && <span style={{ fontSize: 12 }}>Subiendo fotos...</span>}
+                        {galleryError && <span style={{ fontSize: 12, color: "#b00020" }}>{galleryError}</span>}
+                        {galleryDraft.length > 0 && (
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 }}>
+                            {galleryDraft.map((url) => (
+                              <div key={url} style={{ position: "relative" }}>
+                                <img
+                                  src={url}
+                                  alt="galeria"
+                                  width={60}
+                                  height={60}
+                                  style={{ objectFit: "cover", borderRadius: 8, border: "1px solid #e0e0e0" }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => removeGalleryUrl(url)}
+                                  disabled={busy}
+                                  style={{
+                                    position: "absolute",
+                                    top: -6,
+                                    right: -6,
+                                    width: 20,
+                                    height: 20,
+                                    borderRadius: "50%",
+                                    border: "1px solid #ccc",
+                                    background: "#fff",
+                                    cursor: "pointer",
+                                  }}
+                                  aria-label="Quitar foto"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
                       <div style={{ display: "flex", gap: 8 }}>
                         <button
                           type="button"
                           onClick={() => saveEdit(p._id)}
-                          disabled={busy}
+                          disabled={busy || galleryUploading}
                           style={{
                             padding: "8px 12px",
                             borderRadius: 8,
@@ -238,7 +329,7 @@ export default function AdminList() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => setEditId(null)}
+                          onClick={() => { setEditId(null); setGalleryDraft([]); setGalleryError(""); }}
                           disabled={busy}
                           style={{
                             padding: "8px 12px",
@@ -355,6 +446,9 @@ export default function AdminList() {
                       € {priceLabel}
                     </span>
                   </div>
+                  {Array.isArray(p.gallery) && p.gallery.length > 0 ? (
+                    <small style={{ color: "#777" }}>{p.gallery.length} foto(s) adicionales</small>
+                  ) : null}
                 </div>
 
                 <button

@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 import productsRouter from "./routes/products.js";
 import adminRouter from "./routes/admin.js";
+import settingsRouter from "./routes/settings.js";
 import { logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -84,6 +85,11 @@ app.use(
   productsLimiter,
   productsRouter
 );
+
+/* -------------------------
+   Rutas p\xfablicas de settings
+------------------------- */
+app.use("/settings", settingsRouter);
 
 /* -------------------------
    Manejador de errores

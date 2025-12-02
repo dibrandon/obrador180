@@ -3,6 +3,7 @@ const VIEWS = [
   { id: "pausados", label: "Pausados" },
   { id: "todos", label: "Todos" },
   { id: "nuevo", label: "Nuevo producto" },
+  { id: "ajustes", label: "Horarios" },
 ];
 
 export default function AdminNav({ view, onChange }) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { getProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
 
@@ -15,8 +15,8 @@ export default function FeaturedProduct() {
           setStatus("empty");
           return;
         }
-        const last = products[products.length - 1];
-        setFeatured(last);
+        const newest = products[0];
+        setFeatured(newest);
         setStatus("ready");
       } catch (e) {
         setStatus("error");

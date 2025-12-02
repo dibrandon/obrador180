@@ -1,15 +1,23 @@
-import { Router } from "express";
+﻿import { Router } from "express";
 import Product from "../models/Product.js";
 import { adminAuth } from "../middleware/adminAuth.js";
 import { noStore } from "../middleware/noStore.js";
 
 const router = Router();
 
+function normalizeGallery(gallery) {
+  if (!Array.isArray(gallery)) return [];
+  return gallery
+    .filter((item) => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 /**
  * GET /products
- * Público — devuelve solo productos activos.
+ * Público -> devuelve solo productos activos.
  */
-router.get("/", async (req, res, next) => {
+router.get("/", async (_req, res, next) => {
   try {
     const items = await Product.find({ isActive: true }).sort({ createdAt: -1 });
     res.json(items);
@@ -24,7 +32,7 @@ router.get("/", async (req, res, next) => {
  */
 router.post("/", adminAuth, noStore, async (req, res, next) => {
   try {
-    const { name, price, description = "", image = "", isActive = true } = req.body;
+    const { name, price, description = "", image = "", isActive = true, gallery } = req.body || {};
 
     const hasName = typeof name === "string" && name.trim().length > 0;
     const isNumber = typeof price === "number" && Number.isFinite(price) && price >= 0;
@@ -35,11 +43,14 @@ router.post("/", adminAuth, noStore, async (req, res, next) => {
       });
     }
 
+    const normalizedGallery = normalizeGallery(gallery);
+
     const doc = await Product.create({
       name: name.trim(),
       price,
       description: description.trim(),
       image: image.trim(),
+      gallery: normalizedGallery,
       isActive,
     });
 
@@ -52,17 +63,21 @@ router.post("/", adminAuth, noStore, async (req, res, next) => {
 /**
  * PUT /products/:id
  * Requiere adminAuth.
- * Edita nombre, descripción, precio o imagen.
+ * Edita nombre, descripción, precio, imagen o galería.
  */
 router.put("/:id", adminAuth, noStore, async (req, res, next) => {
   try {
-    const { name, price, description, image } = req.body;
+    const { name, price, description, image, gallery } = req.body || {};
     const update = {};
 
     if (typeof name === "string") update.name = name.trim();
     if (typeof description === "string") update.description = description.trim();
     if (typeof image === "string") update.image = image.trim();
     if (typeof price === "number" && Number.isFinite(price)) update.price = price;
+
+    if (Array.isArray(gallery)) {
+      update.gallery = normalizeGallery(gallery);
+    }
 
     const doc = await Product.findByIdAndUpdate(req.params.id, update, { new: true });
     if (!doc) return res.status(404).json({ error: "Producto no encontrado." });
@@ -92,7 +107,7 @@ router.delete("/:id", adminAuth, noStore, async (req, res, next) => {
 });
 
 // Solo admin:
-router.get("/inactive", adminAuth, noStore, async (req, res, next) => {
+router.get("/inactive", adminAuth, noStore, async (_req, res, next) => {
   try {
     const items = await Product.find({ isActive: false }).sort({ updatedAt: -1 });
     res.json(items);
@@ -110,6 +125,5 @@ router.put("/:id/restore", adminAuth, noStore, async (req, res, next) => {
     res.json({ ok: true, id: doc._id });
   } catch (err) { next(err); }
 });
-
 
 export default router;

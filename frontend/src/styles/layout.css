@@ -424,6 +424,30 @@
   opacity: 0.8;
 }
 
+.o-footer__hours {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.2rem;
+}
+
+.o-footer__hours-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.o-footer__hours-day {
+  font-weight: 600;
+  min-width: 90px;
+}
+
+.o-footer__vacation {
+  margin-top: 0.4rem;
+  color: #c62828;
+  font-weight: 700;
+}
+
 /* ========== CATÁLOGO (GRID + CARDS + DENSIDADES) ========== */
 
 /* Grid base, mobile-first */
@@ -467,6 +491,54 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.card__slider-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.card__slider-controls button {
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.card__slider-controls button:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.card__slider-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card__slider-dots button {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+}
+
+.card__slider-dots button.is-active {
+  background: #fff;
 }
 
 .card__body {
@@ -604,6 +676,7 @@
   font-size: 0.98rem;
 }
 
+/* En modo compact ocultamos la descripción para priorizar densidad */
 .product-grid[data-density="compact"] .card__desc {
   display: none;
 }
@@ -722,4 +795,50 @@
 
 .promo-card__btn:hover {
   opacity: 0.85;
+}
+
+/* --- Cómo trabajamos --- */
+.how-work {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  padding: 1.8rem 1.6rem;
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.07),
+    0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.how-work__header {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+}
+
+.how-work__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.how-work__step {
+  background: #fff9f4;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+}
+
+.how-work__step h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.how-work__step p {
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+@media (min-width: 640px) {
+  .how-work__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

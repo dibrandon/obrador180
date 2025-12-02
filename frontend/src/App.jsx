@@ -1,16 +1,15 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import HeaderNav from "./components/HeaderNav";
 import FeaturedProduct from "./components/FeaturedProduct";
 import PromoCard from "./components/PromoCard";
+import HowWeWorkSection from "./components/HowWeWorkSection";
 import Footer from "./components/Footer";
 
 function App() {
   return (
     <div className="o-shell">
-      {/* Ancla para "Inicio" */}
       <div id="top" />
 
-      {/* Barra superior */}
       <header className="o-header">
         <div className="o-header__inner">
           <HeaderNav />
@@ -18,7 +17,6 @@ function App() {
       </header>
 
       <main className="o-main">
-        {/* HERO principal */}
         <section className="o-section o-section--hero">
           <div className="hero">
             <div className="hero__content">
@@ -55,7 +53,8 @@ function App() {
 
         <PromoCard />
 
-        {/* NOSOTROS */}
+        <HowWeWorkSection />
+
         <section id="nosotros" className="o-section o-section--muted">
           <header style={{ marginBottom: "1rem" }}>
             <h2 className="o-section__title">Sobre nosotros</h2>
@@ -76,11 +75,10 @@ function App() {
           </p>
           <p className="hero__text">
             Si tenés una celebración especial, una reunión familiar o
-            simplemente ganas de algo rico, estamos acá para hacerlo realidad.
+            simplemente ganas de algo rico, estamos aquí para hacerlo realidad.
           </p>
         </section>
 
-        {/* CONTACTO / ENCARGOS */}
         <section id="contacto" className="o-section">
           <header style={{ marginBottom: "1rem" }}>
             <h2 className="o-section__title">Encargos y consultas</h2>
